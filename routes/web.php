@@ -8,7 +8,8 @@ Route::get('/', function () {
 });
 
 
+
 // Đặt các route admin vào một nhóm để dễ quản lý
 Route::prefix('admin')->name('admin.')->group(function () {
-    Route::resource('san_pham', SanPhamController::class);
+    Route::resource('san-pham', SanPhamController::class);
 });

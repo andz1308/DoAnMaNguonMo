@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\SanPham;
 use Illuminate\Http\Request;
 
-class SanPhamController extends Controller
+class SanPhamController
 {
     /**
      * Display a listing of the resource.
