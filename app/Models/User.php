@@ -14,9 +14,11 @@ class User extends Model
         'name',
         'email',
         'dien_thoai',
+        'phone', // Alias for dien_thoai
         'dia_chi',
         'password',
         'gioi_tinh',
+        'trang_thai',
     ];
 
     protected $hidden = ['password'];
