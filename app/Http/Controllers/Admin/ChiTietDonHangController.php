@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Admin; 
-use App\Http\Controllers\Controller;
+namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 
-class ChiTietDonHangController extends Controller
+class ChiTietDonHangController
 {
     //
 }
