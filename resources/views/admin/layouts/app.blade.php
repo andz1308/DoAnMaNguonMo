@@ -266,19 +266,19 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="{{ route('admin.don_hang.index') }}" class="{{ request()->routeIs('admin.don_hang.*') ? 'active' : '' }}">
                     <i class="fas fa-shopping-cart"></i>
                     <span>Quản lý đơn hàng</span>
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="{{ route('admin.khuyen_mai.index') }}" class="{{ request()->routeIs('admin.khuyen_mai.*') ? 'active' : '' }}">
                     <i class="fas fa-tags"></i>
                     <span>Quản lý khuyến mãi</span>
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="{{ route('admin.reports.index') }}" class="{{ request()->routeIs('admin.reports.*') ? 'active' : '' }}">
                     <i class="fas fa-chart-bar"></i>
                     <span>Báo cáo thống kê</span>
                 </a>

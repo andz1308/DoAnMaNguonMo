@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\SanPham;
 use App\Models\DanhGia;
 use App\Models\Feedback;
+use App\Models\DonHang;
+use App\Models\KhuyenMai;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 
@@ -19,6 +21,8 @@ class DashboardController extends Controller
         $totalProducts = SanPham::count();
         $totalReviews = DanhGia::count();
         $pendingFeedback = Feedback::where('trang_thai', 0)->count();
+    $totalOrders = DonHang::count();
+    $totalPromotions = KhuyenMai::count();
 
         // Get recent data
         $userDateCol = Schema::hasColumn('users', 'created_at') ? 'created_at' : 'id';
@@ -47,6 +51,7 @@ class DashboardController extends Controller
             'recentUsers',
             'recentReviews',
             'recentFeedback'
+            , 'totalOrders', 'totalPromotions'
         ));
     }
 }

@@ -71,6 +71,50 @@
             </div>
         </div>
     </div>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="row mb-4">
+        <div class="col-md-4 mb-3">
+            <a href="{{ route('admin.don_hang.index') }}" class="text-decoration-none">
+                <div class="stats-card">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Đơn hàng</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalOrders ?? 0 }}</div>
+                        </div>
+                        <div class="card-icon text-primary"><i class="fas fa-shopping-cart"></i></div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4 mb-3">
+            <a href="{{ route('admin.khuyen_mai.index') }}" class="text-decoration-none">
+                <div class="stats-card">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Khuyến mãi</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalPromotions ?? 0 }}</div>
+                        </div>
+                        <div class="card-icon text-primary"><i class="fas fa-tags"></i></div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4 mb-3">
+            <a href="{{ route('admin.reports.index') }}" class="text-decoration-none">
+                <div class="stats-card">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Báo cáo</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">Xem báo cáo</div>
+                        </div>
+                        <div class="card-icon text-primary"><i class="fas fa-chart-bar"></i></div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
 
     <div class="row">
         <!-- Recent Reviews -->

@@ -6,6 +6,9 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Admin\DanhGiaController;
 use App\Http\Controllers\Admin\FeedbackController;
+use App\Http\Controllers\Admin\DonHangController;
+use App\Http\Controllers\Admin\KhuyenMaiController;
+use App\Http\Controllers\Admin\ReportController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -47,4 +50,22 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::delete('feedback/{id}', [FeedbackController::class, 'destroy'])->name('feedback.destroy');
     Route::post('feedback/bulk-mark-processed', [FeedbackController::class, 'bulkMarkProcessed'])->name('feedback.bulk-mark-processed');
     Route::post('feedback/bulk-delete', [FeedbackController::class, 'bulkDelete'])->name('feedback.bulk-delete');
+
+    // Orders Management
+    Route::get('don-hang', [DonHangController::class, 'index'])->name('don_hang.index');
+    Route::get('don-hang/{id}', [DonHangController::class, 'show'])->name('don_hang.show');
+
+    // Promotions Management
+    Route::resource('khuyen-mai', KhuyenMaiController::class)->names([
+        'index' => 'khuyen_mai.index',
+        'create' => 'khuyen_mai.create',
+        'store' => 'khuyen_mai.store',
+        'show' => 'khuyen_mai.show',
+        'edit' => 'khuyen_mai.edit',
+        'update' => 'khuyen_mai.update',
+        'destroy' => 'khuyen_mai.destroy',
+    ]);
+
+    // Reports / Statistics
+    Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
 });
