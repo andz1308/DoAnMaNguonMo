@@ -6,7 +6,19 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
+    'App\\Http\\Controllers\\Admin\\SanPhamController' => $baseDir . '/app/Http/Controllers/Admin/SanPhamController.php',
+    'App\\Http\\Controllers\\HomeController' => $baseDir . '/app/Http/Controllers/HomeController.php',
+    'App\\Models\\ChiTietDonHang' => $baseDir . '/app/Models/ChiTietDonHang.php',
+    'App\\Models\\ChiTietKhuyenMai' => $baseDir . '/app/Models/ChiTietKhuyenMai.php',
+    'App\\Models\\DanhGia' => $baseDir . '/app/Models/DanhGia.php',
+    'App\\Models\\DonHang' => $baseDir . '/app/Models/DonHang.php',
+    'App\\Models\\Feedback' => $baseDir . '/app/Models/Feedback.php',
+    'App\\Models\\Image' => $baseDir . '/app/Models/Image.php',
+    'App\\Models\\KhuyenMai' => $baseDir . '/app/Models/KhuyenMai.php',
+    'App\\Models\\LoaiSanPham' => $baseDir . '/app/Models/LoaiSanPham.php',
+    'App\\Models\\Role' => $baseDir . '/app/Models/Role.php',
+    'App\\Models\\SanPham' => $baseDir . '/app/Models/SanPham.php',
+    'App\\Models\\ThanhToan' => $baseDir . '/app/Models/ThanhToan.php',
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
     'Attribute' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',

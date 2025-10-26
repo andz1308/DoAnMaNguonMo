@@ -17,4 +17,9 @@ class LoaiSanPham extends Model
     {
         return $this->hasMany(SanPham::class, 'loai_san_pham_id');
     }
+
+    public function getBrandsAttribute()
+    {
+        return $this->sanPhams()->distinct()->pluck('thuong_hieu')->filter();
+    }
 }

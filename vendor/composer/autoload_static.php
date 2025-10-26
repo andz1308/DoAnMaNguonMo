@@ -533,7 +533,19 @@ class ComposerStaticInitc514d8f7b9fc5970bdd94287905ef584
     );
 
     public static $classMap = array (
-        'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
+        'App\\Http\\Controllers\\Admin\\SanPhamController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/SanPhamController.php',
+        'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
+        'App\\Models\\ChiTietDonHang' => __DIR__ . '/../..' . '/app/Models/ChiTietDonHang.php',
+        'App\\Models\\ChiTietKhuyenMai' => __DIR__ . '/../..' . '/app/Models/ChiTietKhuyenMai.php',
+        'App\\Models\\DanhGia' => __DIR__ . '/../..' . '/app/Models/DanhGia.php',
+        'App\\Models\\DonHang' => __DIR__ . '/../..' . '/app/Models/DonHang.php',
+        'App\\Models\\Feedback' => __DIR__ . '/../..' . '/app/Models/Feedback.php',
+        'App\\Models\\Image' => __DIR__ . '/../..' . '/app/Models/Image.php',
+        'App\\Models\\KhuyenMai' => __DIR__ . '/../..' . '/app/Models/KhuyenMai.php',
+        'App\\Models\\LoaiSanPham' => __DIR__ . '/../..' . '/app/Models/LoaiSanPham.php',
+        'App\\Models\\Role' => __DIR__ . '/../..' . '/app/Models/Role.php',
+        'App\\Models\\SanPham' => __DIR__ . '/../..' . '/app/Models/SanPham.php',
+        'App\\Models\\ThanhToan' => __DIR__ . '/../..' . '/app/Models/ThanhToan.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
