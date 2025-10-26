@@ -248,7 +248,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('admin.san-pham.index') }}" class="{{ request()->routeIs('admin.san-pham.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.san_pham.index') }}" class="{{ request()->routeIs('admin.san_pham.*') ? 'active' : '' }}">
                     <i class="fas fa-box"></i>
                     <span>Quản lý sản phẩm</span>
                 </a>

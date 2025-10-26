@@ -22,7 +22,9 @@ class DanhGiaController extends Controller
                     $qu->where('name', 'like', "%{$search}%");
                 })
                 ->orWhereHas('sanPham', function($qs) use ($search) {
-                    $qs->where('ten_san_pham', 'like', "%{$search}%");
+                    // DB column is `name` (migration uses `name`).
+                    // Search against `name` to avoid unknown column errors.
+                    $qs->where('name', 'like', "%{$search}%");
                 })
                 ->orWhere('noi_dung', 'like', "%{$search}%");
             });
@@ -40,7 +42,10 @@ class DanhGiaController extends Controller
 
     $dateCol = Schema::hasColumn('danh_gia', 'created_at') ? 'created_at' : 'id';
     $reviews = $query->orderByDesc($dateCol)->paginate(15);
-        $products = SanPham::select('id', 'ten_san_pham')->get();
+
+        // select the real column (`name`). We rely on the model accessor
+        // so views/controllers can still read ->ten_san_pham.
+        $products = SanPham::select('id', 'name')->get();
 
         // Statistics
         $totalReviews = DanhGia::count();

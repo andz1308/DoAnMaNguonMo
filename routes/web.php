@@ -22,8 +22,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('users', UsersController::class);
     Route::post('users/{id}/toggle-status', [UsersController::class, 'toggleStatus'])->name('users.toggle-status');
     
-    // Product Management
-    Route::resource('san-pham', SanPhamController::class);
+    // Product Management (resource path uses kebab-case but route names use snake_case to match views)
+    Route::resource('san-pham', SanPhamController::class)->names([
+        'index' => 'san_pham.index',
+        'create' => 'san_pham.create',
+        'store' => 'san_pham.store',
+        'show' => 'san_pham.show',
+        'edit' => 'san_pham.edit',
+        'update' => 'san_pham.update',
+        'destroy' => 'san_pham.destroy',
+    ]);
     
     // Reviews Management
     Route::get('reviews', [DanhGiaController::class, 'index'])->name('reviews.index');
