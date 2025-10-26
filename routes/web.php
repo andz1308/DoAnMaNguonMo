@@ -3,6 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\SanPhamController;
 use App\Http\Controllers\User\UsersController;
+<<<<<<< HEAD
+=======
+use App\Http\Controllers\Admin\ImagesController;
+>>>>>>> origin/longvu
 
 Route::get('/', function () {
     return view('welcome');
@@ -23,4 +27,8 @@ Route::post('/logout', [UsersController::class, 'logout'])->name('logout');
 // Đặt các route admin vào một nhóm để dễ quản lý
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('san_pham', SanPhamController::class);
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> origin/longvu

@@ -9,7 +9,11 @@ class Image extends Model
 {
     use HasFactory;
     public $timestamps = false;
+<<<<<<< HEAD
 
+=======
+      protected $table = 'images';
+>>>>>>> origin/longvu
     protected $fillable = ['name', 'san_pham_id'];
 
     public function sanPham()
