@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('content'); ?>
     <h1>Cập nhật Sản phẩm: <?php echo e($sanPham->name); ?></h1>
 

@@ -16,7 +16,6 @@ class User extends Authenticatable implements AuthenticatableContract
 
     public $timestamps = false;
 
-    protected $table = 'users';
 
     protected $fillable = [
         'role_id',
