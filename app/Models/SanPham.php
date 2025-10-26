@@ -94,4 +94,13 @@ class SanPham extends Model
     {
         return $this->hasMany(ChiTietKhuyenMai::class, 'san_pham_id');
     }
+
+    /**
+     * Accessor for legacy attribute name used across views/controllers.
+     * Allows $sanPham->ten_san_pham to return the `name` column.
+     */
+    public function getTenSanPhamAttribute()
+    {
+        return $this->attributes['name'] ?? null;
+    }
 }

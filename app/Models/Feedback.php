@@ -8,9 +8,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Feedback extends Model
 {
     use HasFactory;
-    public $timestamps = false;
-
+    
     protected $table = 'feedback';
-    protected $fillable = ['tieu_de', 'noi_dung', 'ngay_phan_hoi'];
+    protected $fillable = ['user_id', 'chu_de', 'noi_dung', 'email', 'loai', 'trang_thai'];
 
+    // Enable timestamps
+    public $timestamps = true;
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }
+

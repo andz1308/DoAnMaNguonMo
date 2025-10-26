@@ -8,10 +8,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class DanhGia extends Model
 {
     use HasFactory;
-    public $timestamps = false;
-
+    
     protected $table = 'danh_gia';
-    protected $fillable = ['user_id', 'san_pham_id', 'noi_dung', 'vote'];
+    protected $fillable = ['user_id', 'san_pham_id', 'noi_dung', 'so_sao'];
+
+    // Disable timestamps if not in database
+    public $timestamps = true;
 
     public function user()
     {
@@ -23,3 +25,4 @@ class DanhGia extends Model
         return $this->belongsTo(SanPham::class, 'san_pham_id');
     }
 }
+

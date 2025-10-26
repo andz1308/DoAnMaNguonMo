@@ -9,7 +9,7 @@ class Image extends Model
 {
     use HasFactory;
     public $timestamps = false;
-
+      protected $table = 'images';
     protected $fillable = ['name', 'san_pham_id'];
 
     public function sanPham()

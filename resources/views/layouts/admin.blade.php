@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -25,5 +26,16 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Initialize CKEditor if textarea with id mo_ta exists
+        document.addEventListener('DOMContentLoaded', function () {
+            const el = document.querySelector('#mo_ta');
+            if (el) {
+                ClassicEditor.create(el)
+                    .then(editor => console.log('CKEditor initialized'))
+                    .catch(error => console.error('CKEditor init error', error));
+            }
+        });
+    </script>
 </body>
 </html>
