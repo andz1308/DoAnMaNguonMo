@@ -2,12 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class User extends Model
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+
+
+class User extends Authenticatable implements AuthenticatableContract
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
+
+
+    public $timestamps = false;
+
 
     protected $fillable = [
         'role_id',
@@ -19,7 +27,9 @@ class User extends Model
         'gioi_tinh',
     ];
 
-    protected $hidden = ['password'];
+    protected $hidden = [
+        'password',
+    ];
 
     public function role()
     {
