@@ -7,7 +7,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-         :root {
+        :root {
             --primary-color: #00a0e3;
             --secondary-color: #0056b3;
             --light-bg: #f8f9fa;
@@ -119,11 +119,6 @@
             transition: all 0.3s ease;
             margin-bottom: 15px;
         }
-        .btn-primary-auth {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            box-shadow: 0 4px 15px rgba(0, 160, 227, 0.3);
-        }
         .btn-primary-auth:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(0, 160, 227, 0.4);
@@ -135,7 +130,7 @@
             background: var(--light-bg);
             font-size: 0.95rem;
             color: #666;
-             margin-top: 20px; 
+            margin-top: 20px; 
         }
         .auth-footer a {
             color: var(--primary-color);
@@ -166,14 +161,14 @@
         .password-strength-bar.medium { width: 66%; background: #ffc107; }
         .password-strength-bar.strong { width: 100%; background: #28a745; }
         .password-hint { font-size: 0.85rem; color: #999; margin-top: 5px; }
-        .error-message { /* Dùng cho JS check password match */
+        .error-message {
             color: #dc3545;
             font-size: 0.85rem;
             margin-top: 5px;
             display: none;
         }
         .error-message.show { display: block; }
-         .invalid-feedback { /* Dùng cho lỗi từ Laravel */
+         .invalid-feedback {
             display: block;
             width: 100%;
             margin-top: 0.25rem;
@@ -216,7 +211,7 @@
     </style>
 </head>
 <body>
-     <div class="back-home">
+    <div class="back-home">
         <a href="{{ url('/') }}">
             <i class="fas fa-arrow-left"></i>
             Về trang chủ
@@ -229,13 +224,13 @@
                 <i class="fas fa-mobile-alt"></i>
             </div>
             <h2>PhoneStore</h2>
-             <p>Đăng ký tài khoản mới</p> {{-- Sửa text --}}
+            <p>Đăng ký tài khoản mới</p>
         </div>
 
         <div class="auth-body">
 
-             {{-- Hiển thị lỗi chung (nếu có) --}}
-             @if ($errors->any())
+            {{-- Hiển thị lỗi chung (nếu có) --}}
+            @if ($errors->any())
                 <div class="alert alert-danger" role="alert">
                     <ul class="mb-0 ps-3">
                         @foreach ($errors->all() as $error)
@@ -274,6 +269,20 @@
                     @enderror
                 </div>
 
+                {{-- ĐÃ THÊM: Trường Số điện thoại với hiển thị lỗi --}}
+                <div class="form-group">
+                    <label class="form-label">Số điện thoại</label>
+                    <div class="input-group-custom">
+                        <i class="fas fa-phone input-icon"></i>
+                        <input type="text" class="form-control @error('dien_thoai') is-invalid @enderror"
+                               id="register-phone" name="dien_thoai"
+                               placeholder="Nhập số điện thoại (tùy chọn)" value="{{ old('dien_thoai') }}">
+                    </div>
+                    @error('dien_thoai')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                
                 <div class="form-group">
                     <label class="form-label">Mật khẩu <span>*</span></label>
                     <div class="input-group-custom">
@@ -298,7 +307,7 @@
                     <label class="form-label">Nhập lại mật khẩu <span>*</span></label>
                     <div class="input-group-custom">
                         <i class="fas fa-lock input-icon"></i>
-                        <input type="password" class="form-control" {-- Không cần is-invalid ở đây vì Laravel check 'confirmed' --}}{
+                        <input type="password" class="form-control"
                                id="register-confirm-password" name="password_confirmation"
                                placeholder="Nhập lại mật khẩu" required oninput="checkPasswordMatch()">
                         <button type="button" class="password-toggle" onclick="togglePassword('register-confirm-password')">
@@ -308,11 +317,21 @@
                     <small class="error-message" id="password-match-error">Mật khẩu không khớp</small>
                 </div>
 
-                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="agree-terms">
+                {{-- ĐÃ SỬA: Thêm trường hidden để bắt buộc check box đồng ý --}}
+                <div class="form-check">
+                    <input type="hidden" name="agree_terms" value="0">
+                    <input class="form-check-input @error('agree_terms') is-invalid @enderror" 
+                           type="checkbox" 
+                           id="agree-terms" 
+                           name="agree_terms" 
+                           value="1" 
+                           {{ old('agree_terms') ? 'checked' : '' }}>
                     <label class="form-check-label" for="agree-terms">
-                        Tôi đồng ý với <a href="#" style="color: var(--primary-color);">điều khoản sử dụng</a>
+                        Tôi đồng ý với <a href="#" style="color: var(--primary-color);">điều khoản sử dụng</a> <span style="color: #dc3545;">*</span>
                     </label>
+                    @error('agree_terms')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <button type="submit" class="btn-auth btn-primary-auth">
@@ -321,7 +340,6 @@
             </form>
 
             <div class="auth-footer">
-                {{-- Sửa link footer trỏ sang trang đăng nhập --}}
                 <p>Đã có tài khoản? <a href="{{ route('login') }}">Đăng nhập ngay</a></p>
             </div>
         </div>
@@ -329,7 +347,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
     <script>
-         function togglePassword(fieldId) {
+        function togglePassword(fieldId) {
             const passwordField = document.getElementById(fieldId);
             const icon = document.getElementById(fieldId + '-icon');
             if (passwordField.type === 'password') {
