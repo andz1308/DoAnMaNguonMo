@@ -54,22 +54,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="stats-card danger">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                            Phản hồi chờ xử lý
-                        </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $pendingFeedback ?? 0 }}</div>
-                    </div>
-                    <div class="card-icon text-danger">
-                        <i class="fas fa-comments"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
     </div>
 
@@ -149,48 +133,6 @@
                             @empty
                             <tr>
                                 <td colspan="4" class="text-center text-muted">Chưa có đánh giá nào</td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Recent Feedback -->
-        <div class="col-lg-6 mb-4">
-            <div class="table-container">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="mb-0"><i class="fas fa-comments text-info me-2"></i>Phản hồi gần đây</h5>
-                    <a href="{{ route('admin.feedback.index') }}" class="btn btn-sm btn-primary">Xem tất cả</a>
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Người gửi</th>
-                                <th>Chủ đề</th>
-                                <th>Trạng thái</th>
-                                <th>Ngày</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($recentFeedback ?? [] as $feedback)
-                            <tr>
-                                <td>{{ $feedback->user->name ?? 'N/A' }}</td>
-                                <td>{{ Str::limit($feedback->chu_de ?? 'N/A', 30) }}</td>
-                                <td>
-                                    @if(($feedback->trang_thai ?? 0) == 0)
-                                        <span class="badge bg-warning">Chờ xử lý</span>
-                                    @else
-                                        <span class="badge bg-success">Đã xử lý</span>
-                                    @endif
-                                </td>
-                                <td>{{ $feedback->created_at ? $feedback->created_at->format('d/m/Y') : 'N/A' }}</td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="4" class="text-center text-muted">Chưa có phản hồi nào</td>
                             </tr>
                             @endforelse
                         </tbody>

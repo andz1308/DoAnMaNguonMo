@@ -260,12 +260,6 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('admin.feedback.index') }}" class="{{ request()->routeIs('admin.feedback.*') ? 'active' : '' }}">
-                    <i class="fas fa-comments"></i>
-                    <span>Quản lý phản hồi</span>
-                </a>
-            </li>
-            <li>
                 <a href="{{ route('admin.don_hang.index') }}" class="{{ request()->routeIs('admin.don_hang.*') ? 'active' : '' }}">
                     <i class="fas fa-shopping-cart"></i>
                     <span>Quản lý đơn hàng</span>
