@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('admin.layouts.app')
 
 @section('content')
     <h1>Cập nhật Sản phẩm: {{ $sanPham->name }}</h1>

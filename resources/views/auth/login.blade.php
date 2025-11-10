@@ -6,7 +6,6 @@
     <title>Đăng nhập - PhoneStore</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    {{-- Copy CSS từ file cũ vào đây --}}
     <style>
         :root {
             --primary-color: #00a0e3;
@@ -135,7 +134,7 @@
             background: var(--light-bg);
             font-size: 0.95rem;
             color: #666;
-            margin-top: 20px; /* Thêm khoảng cách */
+            margin-top: 20px;
         }
         .auth-footer a {
             color: var(--primary-color);
@@ -203,13 +202,13 @@
                 <i class="fas fa-mobile-alt"></i>
             </div>
             <h2>PhoneStore</h2>
-            <p>Đăng nhập tài khoản</p> {{-- Sửa text --}}
+            <p>Đăng nhập tài khoản</p>
         </div>
 
         <div class="auth-body">
             
             {{-- Khối hiển thị lỗi chung (chỉ hiển thị lỗi không thuộc về field nào cụ thể) --}}
-            @if ($errors->any() && !$errors->has('email') && !$errors->has('password'))
+            @if ($errors->any() && !$errors->has('login_id') && !$errors->has('password'))
                 <div class="alert alert-danger" role="alert">
                     <ul class="mb-0 ps-3">
                         @foreach ($errors->all() as $error)
@@ -221,17 +220,17 @@
 
             <form method="POST" action="{{ route('login') }}">
                 @csrf
+                
+                {{-- ĐÃ SỬA: Dùng login_id cho cả Email và SĐT --}}
                 <div class="form-group">
-                    <label class="form-label">Email <span>*</span></label>
+                    <label class="form-label">Email hoặc SĐT <span>*</span></label>
                     <div class="input-group-custom">
-                        <i class="fas fa-envelope input-icon"></i>
-                        {{-- Giữ lại giá trị cũ và hiển thị lỗi --}}
-                        <input type="email" class="form-control @error('email') is-invalid @enderror"
-                               id="login-email" name="email"
-                               placeholder="Nhập Email" value="{{ old('email') }}" required autofocus> {{-- Thêm autofocus --}}
+                        <i class="fas fa-user input-icon"></i>
+                        <input type="text" class="form-control @error('login_id') is-invalid @enderror"
+                               id="login-id" name="login_id"
+                               placeholder="Nhập Email hoặc Số điện thoại" value="{{ old('login_id') }}" required autofocus>
                     </div>
-                     {{-- Hiển thị lỗi ngay dưới input --}}
-                    @error('email')
+                    @error('login_id')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
@@ -247,10 +246,9 @@
                             <i class="fas fa-eye" id="login-password-icon"></i>
                         </button>
                     </div>
-                     {{-- Hiển thị lỗi ngay dưới input --}}
-                     @error('password')
+                    @error('password')
                         <div class="invalid-feedback">{{ $message }}</div>
-                     @enderror
+                    @enderror
                 </div>
 
                 <div class="forgot-password">
@@ -262,8 +260,7 @@
                 </button>
             </form>
 
-             <div class="auth-footer">
-                 {{-- Sửa link footer trỏ sang trang đăng ký --}}
+            <div class="auth-footer">
                 <p>Chưa có tài khoản? <a href="{{ route('register') }}">Đăng ký ngay</a></p>
             </div>
         </div>
@@ -271,7 +268,6 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Chỉ giữ lại hàm togglePassword
         function togglePassword(fieldId) {
             const passwordField = document.getElementById(fieldId);
             const icon = document.getElementById(fieldId + '-icon');
