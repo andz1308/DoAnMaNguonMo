@@ -8,10 +8,22 @@
     }
 </style>
 
+@php
+    $cartCount = 0;
+    if(Auth::check()) {
+        $currentCart = \App\Models\DonHang::where('user_id', Auth::id())
+                        ->where('trang_thai', 0)
+                        ->first();
+        
+        if($currentCart) {
+            $cartCount = $currentCart->chiTietDonHang()->count();
+        }
+    }
+@endphp
 <div class="well well-small">
-    <a id="myCart" href="#">
+    <a id="myCart" href="{{ route('cart.index') }}">
         <img src="{{ asset('images/ico-cart.png') }}" alt="cart">
-        0 Giỏ hàng  
+        [ {{ $cartCount }} ] Giỏ hàng 
         <span class="badge badge-warning pull-right"></span>
     </a>
 </div>

@@ -10,10 +10,13 @@ class DanhGia extends Model
     use HasFactory;
     
     protected $table = 'danh_gia';
-    protected $fillable = ['user_id', 'san_pham_id', 'noi_dung', 'so_sao'];
+    protected $fillable = ['user_id', 'san_pham_id', 'noi_dung', 'vote'];
 
-    // Disable timestamps if not in database
-    public $timestamps = false;
+    protected $casts = [
+        'vote' => 'int',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
 
     public function user()
     {
@@ -23,6 +26,16 @@ class DanhGia extends Model
     public function sanPham()
     {
         return $this->belongsTo(SanPham::class, 'san_pham_id');
+    }
+
+    public function getSoSaoAttribute(): ?int
+    {
+        return $this->vote;
+    }
+
+    public function setSoSaoAttribute($value): void
+    {
+        $this->attributes['vote'] = $value;
     }
 }
 

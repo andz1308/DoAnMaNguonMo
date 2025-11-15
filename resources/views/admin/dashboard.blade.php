@@ -122,10 +122,10 @@
                             @forelse($recentReviews ?? [] as $review)
                             <tr>
                                 <td>{{ $review->user->name ?? 'N/A' }}</td>
-                                <td>{{ Str::limit($review->sanPham->ten_san_pham ?? 'N/A', 30) }}</td>
+                                <td>{{ Str::limit($review->sanPham->name ?? 'N/A', 30) }}</td>
                                 <td>
                                     @for($i = 1; $i <= 5; $i++)
-                                        <i class="fas fa-star {{ $i <= ($review->so_sao ?? 0) ? 'text-warning' : 'text-muted' }}"></i>
+                                        <i class="fas fa-star {{ $i <= ($review->vote ?? 0) ? 'text-warning' : 'text-muted' }}"></i>
                                     @endfor
                                 </td>
                                 <td>{{ $review->created_at ? $review->created_at->format('d/m/Y') : 'N/A' }}</td>
@@ -169,7 +169,7 @@
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>
-                                    <span class="badge bg-info">{{ $user->role->ten_role ?? 'N/A' }}</span>
+                                    <span class="badge bg-info">{{ $user->role->name ?? 'N/A' }}</span>
                                 </td>
                                 <td>{{ $user->created_at ? $user->created_at->format('d/m/Y H:i') : 'N/A' }}</td>
                                 <td>

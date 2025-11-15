@@ -13,26 +13,26 @@ class HomeController extends Controller
     {
         $products = SanPham::with('images')->get();
         $categories = LoaiSanPham::with('sanPhams')->get();
-        
+
         return view('home.index', compact('products', 'categories'));
     }
 
     public function search(Request $request)
     {
         $query = $request->get('query');
-        
+
         if (empty($query)) {
             return redirect()->route('home');
         }
-        
+
         $products = SanPham::where('name', 'like', '%' . $query . '%')
             ->orWhere('mo_ta', 'like', '%' . $query . '%')
             ->orWhere('gioi_thieu', 'like', '%' . $query . '%')
             ->with('images')
             ->get();
-            
+
         $categories = LoaiSanPham::with('sanPhams')->get();
-            
+
         return view('home.search', compact('products', 'query', 'categories'));
     }
 
@@ -40,15 +40,15 @@ class HomeController extends Controller
     {
         $brand = $request->get('brand');
         $categoryId = $request->get('category');
-        
+
         $products = SanPham::where('thuong_hieu', $brand)
             ->where('loai_san_pham_id', $categoryId)
             ->with('images')
             ->get();
-            
+
         $categoryName = LoaiSanPham::find($categoryId)->name ?? '';
         $categories = LoaiSanPham::with('sanPhams')->get();
-        
+
         return view('home.products-by-brand', compact('products', 'brand', 'categoryName', 'categories'));
     }
 
@@ -57,18 +57,20 @@ class HomeController extends Controller
         $products = SanPham::where('loai_san_pham_id', $categoryId)
             ->with('images')
             ->get();
-            
+
         $category = LoaiSanPham::find($categoryId);
         $categories = LoaiSanPham::with('sanPhams')->get();
-        
+
         return view('home.index', compact('products', 'category', 'categories'));
     }
 
     public function show($id)
     {
-        $product = SanPham::with('images', 'loaiSanPham')->findOrFail($id);
+        // Thêm 'danhGias.user' vào đây
+        $product = SanPham::with(['images', 'loaiSanPham', 'danhGias.user'])->findOrFail($id);
+
         $categories = LoaiSanPham::with('sanPhams')->get();
-        
+
         return view('home.product-detail', compact('product', 'categories'));
     }
 }

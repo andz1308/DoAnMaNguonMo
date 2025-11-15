@@ -13,10 +13,6 @@ class User extends Authenticatable implements AuthenticatableContract
 {
     use HasFactory, Notifiable;
 
-
-    public $timestamps = false;
-
-
     protected $fillable = [
         'role_id',
         'name',
@@ -25,14 +21,33 @@ class User extends Authenticatable implements AuthenticatableContract
         'dia_chi',
         'password',
         'gioi_tinh',
+        'trang_thai',
     ];
 
     protected $hidden = [
         'password',
     ];
 
+    protected $casts = [
+        'trang_thai' => 'boolean',
+    ];
+
+    protected $appends = [
+        'phone',
+    ];
+
     public function role()
     {
         return $this->belongsTo(Role::class, 'role_id');
+    }
+
+    public function getPhoneAttribute(): ?string
+    {
+        return $this->dien_thoai;
+    }
+
+    public function setPhoneAttribute(?string $value): void
+    {
+        $this->attributes['dien_thoai'] = $value;
     }
 }

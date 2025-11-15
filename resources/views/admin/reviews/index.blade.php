@@ -13,23 +13,23 @@
         <!-- Search and Filter -->
         <div class="row mb-3">
             <div class="col-md-4">
-                <input type="text" class="form-control" id="searchReview" placeholder="Tìm kiếm theo sản phẩm, người dùng...">
+                <input type="text" class="form-control" id="searchReview" placeholder="Tìm kiếm theo sản phẩm, người dùng..." value="{{ request('search') }}">
             </div>
             <div class="col-md-3">
                 <select class="form-select" id="filterRating">
                     <option value="">Tất cả đánh giá</option>
-                    <option value="5">5 sao</option>
-                    <option value="4">4 sao</option>
-                    <option value="3">3 sao</option>
-                    <option value="2">2 sao</option>
-                    <option value="1">1 sao</option>
+                    <option value="5" @selected(request('rating') == '5')>5 sao</option>
+                    <option value="4" @selected(request('rating') == '4')>4 sao</option>
+                    <option value="3" @selected(request('rating') == '3')>3 sao</option>
+                    <option value="2" @selected(request('rating') == '2')>2 sao</option>
+                    <option value="1" @selected(request('rating') == '1')>1 sao</option>
                 </select>
             </div>
             <div class="col-md-3">
                 <select class="form-select" id="filterProduct">
                     <option value="">Tất cả sản phẩm</option>
                     @foreach($products ?? [] as $product)
-                        <option value="{{ $product->id }}">{{ $product->ten_san_pham }}</option>
+                        <option value="{{ $product->id }}" @selected(request('product') == $product->id)>{{ $product->name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -89,7 +89,6 @@
                         <th>Người đánh giá</th>
                         <th>Đánh giá</th>
                         <th>Nội dung</th>
-                        <th>Ngày đánh giá</th>
                         <th width="120" class="text-center">Thao tác</th>
                     </tr>
                 </thead>
@@ -101,15 +100,22 @@
                         </td>
                         <td>{{ $review->id }}</td>
                         <td>
-                            <div class="d-flex align-items-center">
-                                @if($review->sanPham && $review->sanPham->images->isNotEmpty())
-                                    <img src="{{ asset('uploads/images/' . $review->sanPham->images->first()->name) }}" 
-                                         alt="" style="width: 40px; height: 40px; object-fit: cover; border-radius: 5px;" class="me-2">
-                                @endif
-                                <div>
-                                    <strong>{{ Str::limit($review->sanPham->ten_san_pham ?? 'N/A', 30) }}</strong>
+                                @php
+                                    $imageName = $review->sanPham->images->first()->name
+                                        ?? $review->sanPham->image
+                                        ?? null;
+                                    $imageUrl = $imageName ? asset('uploads/images/san_pham/' . $imageName) : null;
+                                @endphp
+                                <div class="d-flex align-items-center">
+                                    @if($imageUrl)
+                                        <img src="{{ $imageUrl }}"
+                                             alt="{{ $review->sanPham->name ?? '' }}"
+                                             style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px;" class="me-2">
+                                    @endif
+                                    <div>
+                                        <strong>{{ Str::limit($review->sanPham->name ?? 'N/A', 30) }}</strong>
+                                    </div>
                                 </div>
-                            </div>
                         </td>
                         <td>
                             <div>
@@ -122,15 +128,15 @@
                             <div class="d-flex align-items-center">
                                 <span class="me-2">
                                     @for($i = 1; $i <= 5; $i++)
-                                        <i class="fas fa-star {{ $i <= ($review->so_sao ?? 0) ? 'text-warning' : 'text-muted' }}"></i>
+                                        <i class="fas fa-star {{ $i <= ($review->vote ?? 0) ? 'text-warning' : 'text-muted' }}"></i>
                                     @endfor
                                 </span>
                                 <span class="badge 
-                                    @if(($review->so_sao ?? 0) >= 4) bg-success
-                                    @elseif(($review->so_sao ?? 0) >= 3) bg-warning
+                                    @if(($review->vote ?? 0) >= 4) bg-success
+                                    @elseif(($review->vote ?? 0) >= 3) bg-warning
                                     @else bg-danger
                                     @endif">
-                                    {{ $review->so_sao ?? 0 }}/5
+                                    {{ $review->vote ?? 0 }}/5
                                 </span>
                             </div>
                         </td>
@@ -139,7 +145,6 @@
                                 {{ Str::limit($review->noi_dung ?? 'Không có nội dung', 60) }}
                             </div>
                         </td>
-                        <td>{{ $review->created_at ? $review->created_at->format('d/m/Y H:i') : 'N/A' }}</td>
                         <td class="text-center">
                             <button class="btn btn-sm btn-info" onclick="viewReview({{ $review->id }})" title="Xem chi tiết">
                                 <i class="fas fa-eye"></i>
@@ -151,7 +156,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="8" class="text-center text-muted py-4">
+                        <td colspan="7" class="text-center text-muted py-4">
                             <i class="fas fa-inbox fa-3x mb-3 d-block"></i>
                             Chưa có đánh giá nào
                         </td>

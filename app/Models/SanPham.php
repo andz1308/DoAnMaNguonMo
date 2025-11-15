@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class SanPham extends Model
 {
     use HasFactory;
-    public $timestamps = false;
 
     protected $table = 'san_pham';
     protected $fillable = [

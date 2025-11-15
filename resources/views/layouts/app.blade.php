@@ -172,8 +172,24 @@
                         <a href="#"><span>&pound;</span></a>
                         <span class="btn btn-mini">$</span>
                         <a href="#"><span class="">$</span></a>
-                        <a href="#"><span class="btn btn-mini btn-primary"><i class="icon-shopping-cart icon-white"></i>
-                                0 Giỏ hàng </span> </a>
+                        @php
+                            $cartCount = 0;
+                            if (Auth::check()) {
+                                $currentCart = \App\Models\DonHang::where('user_id', Auth::id())
+                                    ->where('trang_thai', 0)
+                                    ->first();
+
+                                if ($currentCart) {
+                                    $cartCount = $currentCart->chiTietDonHang()->count();
+                                }
+                            }
+                        @endphp
+                        <a href="{{ route('cart.index') }}">
+                            <span class="btn btn-mini btn-primary">
+                                <i class="icon-shopping-cart icon-white"></i>
+                                [ {{ $cartCount }} ] Giỏ hàng
+                            </span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -195,8 +211,11 @@
                     </form>
                     <ul id="topMenu" class="nav">
                         <li class=""><a href="#">Báo cáo & phản hồi</a></li>
-                        <li class=""><a href="#">Đơn hàng</a></li>
-
+                        @auth
+                            <li class=""><a href="{{ route('user.orders.index') }}">Đơn hàng của tôi</a></li>
+                        @else
+                            <li class=""><a href="{{ route('login') }}">Đơn hàng</a></li>
+                        @endauth
                         @auth
                             <li class="nav">
                                 <a href="#" style="display:flex; justify-content:center;align-items:center">
@@ -204,7 +223,7 @@
                                     <p style="font-size:15px; margin: 0;">Hi!, {{ auth()->user()->name }}</p>
                                 </a>
                                 <ul class="nav-list">
-                                    <li><a href="">Thông tin tài khoản</a></li>
+                                    <li><a href="{{ route('user.profile.show') }}">Thông tin tài khoản</a></li>
 
                                     <li>
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST"

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         // Bảng roles
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('role', function (Blueprint $table) {
             $table->id();
             $table->string('name', 20);
             $table->timestamps();
@@ -21,7 +21,7 @@ return new class extends Migration
         // Bảng users
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('role_id')->constrained('roles');
+            $table->foreignId('role_id')->constrained('role');
             $table->string('name');
             $table->string('email')->unique();
             $table->string('dien_thoai', 20);
@@ -114,15 +114,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // Bảng feedback
-        Schema::create('feedback', function (Blueprint $table) {
-            $table->id();
-            $table->string('tieu_de');
-            $table->text('noi_dung')->nullable();
-            $table->datetime('ngay_phan_hoi');
-            $table->timestamps();
-        });
-
         // Bảng thanh_toan
         Schema::create('thanh_toan', function (Blueprint $table) {
             $table->foreignId('don_hang_id')->primary()->constrained('don_hang');
@@ -138,7 +129,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('thanh_toan');
-        Schema::dropIfExists('feedback');
         Schema::dropIfExists('danh_gia');
         Schema::dropIfExists('chi_tiet_khuyen_mai');
         Schema::dropIfExists('khuyen_mai');

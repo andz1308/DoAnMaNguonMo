@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Feedback extends Model
 {
     use HasFactory;
-    public $timestamps = false;
 
     protected $table = 'feedback';
     protected $fillable = ['tieu_de', 'noi_dung', 'ngay_phan_hoi'];

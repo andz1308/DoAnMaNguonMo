@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class ThanhToan extends Model
 {
     use HasFactory;
-    public $timestamps = false;
 
     protected $table = 'thanh_toan';
     protected $primaryKey = 'don_hang_id';

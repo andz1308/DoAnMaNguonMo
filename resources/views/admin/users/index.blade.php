@@ -6,6 +6,16 @@
 @section('content')
 <div class="container-fluid">
     <div class="table-container">
+        @if($errors->any())
+            <div class="alert alert-danger">
+                <strong>Đã xảy ra lỗi:</strong>
+                <ul class="mb-0 mt-2">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h4 class="mb-0"><i class="fas fa-users me-2"></i>Danh sách người dùng</h4>
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
@@ -16,21 +26,22 @@
         <!-- Search and Filter -->
         <div class="row mb-3">
             <div class="col-md-4">
-                <input type="text" class="form-control" id="searchUser" placeholder="Tìm kiếm theo tên, email...">
+                <input type="text" class="form-control" id="searchUser" placeholder="Tìm kiếm theo tên, email, số điện thoại"
+                    value="{{ request('search') }}">
             </div>
             <div class="col-md-3">
                 <select class="form-select" id="filterRole">
                     <option value="">Tất cả vai trò</option>
                     @foreach($roles ?? [] as $role)
-                        <option value="{{ $role->id }}">{{ $role->ten_role }}</option>
+                        <option value="{{ $role->id }}" @selected(request('role') == $role->id)>{{ $role->name }}</option>
                     @endforeach
                 </select>
             </div>
             <div class="col-md-3">
                 <select class="form-select" id="filterStatus">
                     <option value="">Tất cả trạng thái</option>
-                    <option value="1">Hoạt động</option>
-                    <option value="0">Bị khóa</option>
+                    <option value="1" @selected(request('status') === '1')>Hoạt động</option>
+                    <option value="0" @selected(request('status') === '0')>Bị khóa</option>
                 </select>
             </div>
             <div class="col-md-2">
@@ -54,7 +65,6 @@
                         <th>Số điện thoại</th>
                         <th>Vai trò</th>
                         <th>Trạng thái</th>
-                        <th>Ngày đăng ký</th>
                         <th width="150" class="text-center">Thao tác</th>
                     </tr>
                 </thead>
@@ -74,18 +84,17 @@
                             </div>
                         </td>
                         <td>{{ $user->email }}</td>
-                        <td>{{ $user->phone ?? 'Chưa có' }}</td>
+                        <td>{{ $user->dien_thoai ?? 'Chưa có' }}</td>
                         <td>
-                            <span class="badge bg-info">{{ $user->role->ten_role ?? 'N/A' }}</span>
+                            <span class="badge bg-info">{{ $user->role->name ?? 'N/A' }}</span>
                         </td>
                         <td>
-                            @if($user->trang_thai ?? 1)
+                            @if(($user->trang_thai ?? 1) == 1)
                                 <span class="badge bg-success">Hoạt động</span>
                             @else
                                 <span class="badge bg-danger">Bị khóa</span>
                             @endif
                         </td>
-                        <td>{{ $user->created_at ? $user->created_at->format('d/m/Y') : 'N/A' }}</td>
                         <td class="text-center">
                             <button class="btn btn-sm btn-info" onclick="viewUser({{ $user->id }})" title="Xem chi tiết">
                                 <i class="fas fa-eye"></i>
@@ -93,7 +102,7 @@
                             <button class="btn btn-sm btn-warning" onclick="editUser({{ $user->id }})" title="Chỉnh sửa">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            @if($user->trang_thai ?? 1)
+                            @if(($user->trang_thai ?? 1) == 1)
                                 <button class="btn btn-sm btn-danger" onclick="toggleUserStatus({{ $user->id }}, 0)" title="Khóa tài khoản">
                                     <i class="fas fa-lock"></i>
                                 </button>
@@ -102,6 +111,9 @@
                                     <i class="fas fa-unlock"></i>
                                 </button>
                             @endif
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteUser({{ $user->id }})" title="Xóa người dùng">
+                                <i class="fas fa-trash"></i>
+                            </button>
                         </td>
                     </tr>
                     @empty
@@ -143,15 +155,24 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label">Tên người dùng <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" name="name" required>
+                        <input type="text" class="form-control" name="name" value="{{ old('name') }}" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Email <span class="text-danger">*</span></label>
-                        <input type="email" class="form-control" name="email" required>
+                        <input type="email" class="form-control" name="email" value="{{ old('email') }}" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Số điện thoại</label>
-                        <input type="text" class="form-control" name="phone">
+                        <input type="text" class="form-control" name="dien_thoai" value="{{ old('dien_thoai') }}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Giới tính</label>
+                        <select class="form-select" name="gioi_tinh">
+                            <option value="">-- Chọn giới tính --</option>
+                            <option value="Nam" @selected(old('gioi_tinh') === 'Nam')>Nam</option>
+                            <option value="Nu" @selected(old('gioi_tinh') === 'Nu')>Nữ</option>
+                            <option value="Khac" @selected(old('gioi_tinh') === 'Khac')>Khác</option>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Mật khẩu <span class="text-danger">*</span></label>
@@ -160,14 +181,15 @@
                     <div class="mb-3">
                         <label class="form-label">Vai trò <span class="text-danger">*</span></label>
                         <select class="form-select" name="role_id" required>
+                            <option value="">-- Chọn vai trò --</option>
                             @foreach($roles ?? [] as $role)
-                                <option value="{{ $role->id }}">{{ $role->ten_role }}</option>
+                                <option value="{{ $role->id }}" @selected(old('role_id') == $role->id)>{{ $role->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Địa chỉ</label>
-                        <textarea class="form-control" name="dia_chi" rows="2"></textarea>
+                        <textarea class="form-control" name="dia_chi" rows="2">{{ old('dia_chi') }}</textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -213,9 +235,29 @@
                 },
                 success: function(response) {
                     location.reload();
+                },
+                error: function(xhr) {
+                    alert(xhr.responseJSON?.message ?? 'Không thể cập nhật trạng thái người dùng');
                 }
             });
         }
+    }
+
+    function deleteUser(id) {
+        if (!confirm('Bạn có chắc chắn muốn xóa người dùng này?')) {
+            return;
+        }
+
+        const token = '{{ csrf_token() }}';
+        const form = $(`
+            <form method="POST" action="/admin/users/${id}" style="display:none">
+                <input type="hidden" name="_token" value="${token}">
+                <input type="hidden" name="_method" value="DELETE">
+            </form>
+        `);
+
+        $('body').append(form);
+        form[0].submit();
     }
 
     // Select all checkboxes
