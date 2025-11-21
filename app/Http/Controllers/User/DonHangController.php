@@ -25,10 +25,7 @@ class DonHangController extends Controller
      */
     public function addToCart(Request $request, $id)
     {
-        // 1. KIỂM TRA ĐĂNG NHẬP THỦ CÔNG
         if (!Auth::check()) {
-            // Lưu lại trang người dùng đang đứng (Trang chi tiết sản phẩm) làm đích đến sau khi login
-            // url()->previous() chính là link trang sản phẩm họ vừa bấm nút
             session()->put('url.intended', url()->previous());
 
             // Chuyển hướng sang login
@@ -40,12 +37,8 @@ class DonHangController extends Controller
             return back()->with('error', 'Sản phẩm không tồn tại');
         }
 
-        // ========== SỬA ĐỔI 1: LẤY SỐ LƯỢNG TỪ REQUEST ==========
-        // Lấy số lượng từ input, nếu không có thì mặc định là 1
         $soLuongThem = $request->input('so_luong', 1);
 
-        // Kiểm tra số lượng tồn kho
-        // Dùng $soLuongThem thay vì 1
         if ($sanPham->so_luong_con < $soLuongThem) {
             return back()->with('error', 'Sản phẩm không đủ hàng');
         }
@@ -54,7 +47,7 @@ class DonHangController extends Controller
 
         // ... (Phần firstOrCreate DonHang giữ nguyên) ...
         $donHang = DonHang::firstOrCreate(
-            ['user_id' => $user->id, 'trang_thai' => 0],
+            ['user_id' => $user->id, 'trang_thai' => DonHang::STATUS_CART],
             ['ghi_chu' => null]
         );
 
@@ -63,23 +56,20 @@ class DonHangController extends Controller
             ->first();
 
         if ($chiTiet) {
-            // ========== SỬA ĐỔI 2: CỘNG THÊM SỐ LƯỢNG MỚI ==========
-            $soLuongMoi = $chiTiet->so_luong + $soLuongThem; // Cộng số lượng mới vào
+            $soLuongMoi = $chiTiet->so_luong + $soLuongThem; 
 
-            // Kiểm tra lại tồn kho với tổng số lượng mới
             if ($sanPham->so_luong_con < $soLuongMoi) {
                 return back()->with('error', 'Số lượng trong giỏ vượt quá tồn kho!');
             }
 
-            $chiTiet->so_luong = $soLuongMoi; // Gán lại
+            $chiTiet->so_luong = $soLuongMoi;
             $chiTiet->save();
 
         } else {
-            // ========== SỬA ĐỔI 3: TẠO MỚI VỚI SỐ LƯỢNG MỚI ==========
             ChiTietDonHang::create([
                 'don_hang_id' => $donHang->id,
                 'san_pham_id' => $sanPham->id,
-                'so_luong' => $soLuongThem // Dùng $soLuongThem thay vì 1
+                'so_luong' => $soLuongThem 
             ]);
         }
 
@@ -99,7 +89,7 @@ class DonHangController extends Controller
         // Kèm theo thông tin chi tiết (chiTietDonHang) và thông tin sản phẩm (sanPham)
         $cart = DonHang::with('chiTietDonHang.sanPham')
             ->where('user_id', Auth::id())
-            ->where('trang_thai', 0)
+            ->where('trang_thai', DonHang::STATUS_CART)
             ->first();
 
         // Bạn cần tạo view 'home.cart' (dựa theo cấu trúc thư mục của bạn)
@@ -117,8 +107,7 @@ class DonHangController extends Controller
 
         $chiTiet = ChiTietDonHang::find($chiTietId);
 
-        // Kiểm tra xem chi tiết này có thuộc đơn hàng (trạng thái 0) của user đang đăng nhập không
-        if ($chiTiet && $chiTiet->donHang->user_id == Auth::id() && $chiTiet->donHang->trang_thai == 0) {
+        if ($chiTiet && $chiTiet->donHang->user_id == Auth::id() && $chiTiet->donHang->trang_thai == DonHang::STATUS_CART) {
             $chiTiet->delete();
             return back()->with('success', 'Đã xóa sản phẩm');
         }
@@ -142,7 +131,7 @@ class DonHangController extends Controller
             return $this->removeFromCart($chiTietId);
         }
 
-        if ($chiTiet && $chiTiet->donHang->user_id == Auth::id() && $chiTiet->donHang->trang_thai == 0) {
+        if ($chiTiet && $chiTiet->donHang->user_id == Auth::id() && $chiTiet->donHang->trang_thai == DonHang::STATUS_CART) {
             // (Nên kiểm tra số lượng tồn kho ở đây)
             $chiTiet->so_luong = $so_luong_moi;
             $chiTiet->save();

@@ -21,14 +21,17 @@ class DonHang extends Model
     public const STATUS_PROCESSING = 1;
     public const STATUS_COMPLETED = 2;
     public const STATUS_CANCELLED = 3;
+    public const STATUS_CART = 4;
+
 
     public static function statusOptions(): array
     {
         return [
-            self::STATUS_PENDING => 'Chờ xử lý',
-            self::STATUS_PROCESSING => 'Đang xử lý',
+            self::STATUS_PENDING => 'Chờ xử lý',//Chờ thanh toán
+            self::STATUS_PROCESSING => 'Đang xử lý',//Đã thanh toán, chờ admin xử lý
             self::STATUS_COMPLETED => 'Hoàn thành',
             self::STATUS_CANCELLED => 'Đã hủy',
+            self::STATUS_CART => 'Giỏ hàng',
         ];
     }
 

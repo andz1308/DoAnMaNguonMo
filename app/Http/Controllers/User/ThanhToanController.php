@@ -24,7 +24,7 @@ class ThanhToanController extends Controller
             // 1. Tìm giỏ hàng (trạng thái 0)
             $cart = DonHang::with('chiTietDonHang.sanPham')
                         ->where('user_id', Auth::id())
-                        ->where('trang_thai', 0)
+                        ->where('trang_thai', DonHang::STATUS_CART)
                         ->lockForUpdate() // Khóa dòng này để xử lý
                         ->first();
 
@@ -47,7 +47,7 @@ class ThanhToanController extends Controller
 
             // 3. Cập nhật trạng thái -> 1 (Chờ thanh toán)
             $cart->ghi_chu = $request->input('ghi_chu');
-            $cart->trang_thai = 1; 
+            $cart->trang_thai = DonHang::STATUS_PENDING; 
             $cart->save();
 
             DB::commit();
@@ -72,7 +72,7 @@ class ThanhToanController extends Controller
         $donHang = DonHang::with('chiTietDonHang.sanPham')
                         ->where('id', $id)
                         ->where('user_id', Auth::id())
-                        ->where('trang_thai', 1) // Đang giữ chỗ
+                        ->where('trang_thai', DonHang::STATUS_PENDING) // Đang giữ chỗ
                         ->firstOrFail();
 
         // Tính tiền
@@ -80,8 +80,6 @@ class ThanhToanController extends Controller
         foreach ($donHang->chiTietDonHang as $item) {
             $totalMoney += $item->sanPham->gia * $item->so_luong;
         }
-
-        // --- SỬA LẠI HOÀN TOÀN CÁCH TẠO QR ---
 
         // 1. Mã ngân hàng của VietinBank (dùng cho link img.vietqr.io)
         $bankCode = "970415"; // (Vietcombank là VCB, VietinBank là CTG)
@@ -112,7 +110,7 @@ class ThanhToanController extends Controller
         // Tìm đơn hàng đang chờ (1)
         $donHang = DonHang::where('id', $id)
                         ->where('user_id', Auth::id())
-                        ->where('trang_thai', 1)
+                        ->where('trang_thai', DonHang::STATUS_PENDING)
                         ->first();
         
         if (!$donHang) {
@@ -136,7 +134,7 @@ class ThanhToanController extends Controller
         );
 
         // Chuyển trạng thái -> 2 (Hoàn thành/Đã trả tiền)
-        $donHang->trang_thai = 2; 
+        $donHang->trang_thai = DonHang::STATUS_PROCESSING; 
         $donHang->save();
 
         return redirect()->route('home')->with('message', 'Thanh toán thành công!');
@@ -155,7 +153,7 @@ class ThanhToanController extends Controller
             $donHang = DonHang::with('chiTietDonHang.sanPham')
                             ->where('id', $id)
                             ->where('user_id', Auth::id())
-                            ->where('trang_thai', 1) // Chỉ hủy đơn đang chờ
+                            ->where('trang_thai', DonHang::STATUS_PENDING) // Chỉ hủy đơn đang chờ
                             ->firstOrFail();
 
             // Hoàn trả số lượng kho
@@ -165,7 +163,7 @@ class ThanhToanController extends Controller
 
             // Quay về trạng thái 0 (Giỏ hàng) để khách mua tiếp hoặc sửa
             // Hoặc xóa luôn đơn hàng tùy bạn (ở đây tôi chọn quay về giỏ)
-            $donHang->trang_thai = 0;
+            $donHang->trang_thai = DonHang::STATUS_CART;
             $donHang->save();
 
             DB::commit();

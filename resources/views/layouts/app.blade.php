@@ -176,7 +176,7 @@
                             $cartCount = 0;
                             if (Auth::check()) {
                                 $currentCart = \App\Models\DonHang::where('user_id', Auth::id())
-                                    ->where('trang_thai', 0)
+                                    ->where('trang_thai', 4)
                                     ->first();
 
                                 if ($currentCart) {
