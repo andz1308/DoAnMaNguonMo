@@ -210,7 +210,6 @@
                             style="width:300px; height:50px;" />
                     </form>
                     <ul id="topMenu" class="nav">
-                        <li class=""><a href="#">Báo cáo & phản hồi</a></li>
                         @auth
                             <li class=""><a href="{{ route('user.orders.index') }}">Đơn hàng của tôi</a></li>
                         @else

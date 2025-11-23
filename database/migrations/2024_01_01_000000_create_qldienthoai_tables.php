@@ -25,9 +25,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('dien_thoai', 20);
-            $table->string('dia_chi');
+            $table->string('dia_chi')->nullable();
             $table->string('password');
-            $table->string('gioi_tinh', 10);
+            $table->string('gioi_tinh', 10)->nullable();
+            $table->integer('trang_thai')->default(1);
             $table->timestamps();
         });
 
@@ -107,7 +108,7 @@ return new class extends Migration
         // Bảng danh_gia
         Schema::create('danh_gia', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->foreignId('san_pham_id')->constrained('san_pham');
             $table->text('noi_dung')->nullable();
             $table->integer('vote');

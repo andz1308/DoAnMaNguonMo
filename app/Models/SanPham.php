@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -101,8 +102,34 @@ class SanPham extends Model
         return $this->hasMany(DanhGia::class, 'san_pham_id');
     }
 
-    public function chiTietKhuyenMais()
+    public function chiTietKhuyenMai()
     {
         return $this->hasMany(ChiTietKhuyenMai::class, 'san_pham_id');
+    }
+    public function getGiaBanAttribute()
+    {
+        // 1. Tìm khuyến mãi hợp lệ (đang diễn ra)
+        $khuyenMai = $this->chiTietKhuyenMai()
+            ->whereDate('ngay_bd', '<=', Carbon::now())
+            ->whereDate('ngay_kt', '>=', Carbon::now())
+            ->with('khuyenMai') // Eager load bảng khuyen_mai để lấy % hoặc số tiền giảm
+            ->first();
+
+        // 2. Nếu có khuyến mãi, tính giá giảm
+        if ($khuyenMai && $khuyenMai->khuyenMai) {
+            // Giả sử bảng khuyen_mai lưu giá trị giảm trực tiếp hoặc %
+            // Bạn cần kiểm tra cấu trúc bảng khuyen_mai của bạn. 
+            // Dựa vào migration ban đầu: table->string('name'); table->float('gia');
+            // Tôi đoán 'gia' ở đây là số tiền giảm hoặc % giảm.
+            
+            // Trường hợp 1: Giảm tiền trực tiếp (Ví dụ gia = 500000)
+            // return $this->gia - $khuyenMai->khuyenMai->gia;
+
+            // Trường hợp 2: Nếu 'gia' là phần trăm (Ví dụ gia = 10 tức 10%)
+            return $this->gia * (1 - ($khuyenMai->khuyenMai->gia / 100));
+        }
+
+        // 3. Nếu không có khuyến mãi, trả về giá gốc
+        return $this->gia;
     }
 }

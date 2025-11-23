@@ -78,7 +78,7 @@ class ThanhToanController extends Controller
         // Tính tiền
         $totalMoney = 0;
         foreach ($donHang->chiTietDonHang as $item) {
-            $totalMoney += $item->sanPham->gia * $item->so_luong;
+            $totalMoney += $item->sanPham->gia_ban * $item->so_luong;
         }
 
         // 1. Mã ngân hàng của VietinBank (dùng cho link img.vietqr.io)
@@ -121,7 +121,7 @@ class ThanhToanController extends Controller
         // (Lúc này không cần lo hết hàng nữa vì đã trừ ở Bước 1 rồi)
         $totalMoney = 0;
         foreach ($donHang->chiTietDonHang as $item) {
-            $totalMoney += $item->sanPham->gia * $item->so_luong;
+            $totalMoney += $item->sanPham->gia_ban * $item->so_luong;
         }
 
         // Tạo bản ghi thanh toán

@@ -12,17 +12,7 @@ use Illuminate\Support\Facades\Schema;
 
 class DonHangController extends Controller
 {
-    /**
-     * Quy ước:
-     * trang_thai = 0 là "Giỏ hàng" (Đang chọn)
-     * trang_thai = 1 là "Đã đặt hàng" (Chờ xử lý)
-     * trang_thai = 2 là "Đã hoàn thành"
-     * ...
-     */
 
-    /**
-     * Thêm một sản phẩm vào giỏ hàng (Đơn hàng trạng thái 0)
-     */
     public function addToCart(Request $request, $id)
     {
         if (!Auth::check()) {
@@ -76,29 +66,21 @@ class DonHangController extends Controller
         return redirect()->back()->with('success', 'Đã thêm sản phẩm vào giỏ hàng');
     }
 
-    /**
-     * Hiển thị trang giỏ hàng
-     */
+
     public function viewCart()
     {
         if (!Auth::check()) {
             return redirect()->route('login');
         }
 
-        // Lấy giỏ hàng (đơn hàng trạng thái 0) của user
-        // Kèm theo thông tin chi tiết (chiTietDonHang) và thông tin sản phẩm (sanPham)
         $cart = DonHang::with('chiTietDonHang.sanPham')
             ->where('user_id', Auth::id())
             ->where('trang_thai', DonHang::STATUS_CART)
             ->first();
 
-        // Bạn cần tạo view 'home.cart' (dựa theo cấu trúc thư mục của bạn)
         return view('home.cart', compact('cart'));
     }
 
-    /**
-     * Xóa một item khỏi giỏ hàng
-     */
     public function removeFromCart($chiTietId)
     {
         if (!Auth::check()) {
@@ -114,10 +96,6 @@ class DonHangController extends Controller
 
         return back()->with('error', 'Không tìm thấy sản phẩm');
     }
-
-    /**
-     * Cập nhật số lượng
-     */
     public function updateCart(Request $request, $chiTietId)
     {
         if (!Auth::check()) {
@@ -132,7 +110,6 @@ class DonHangController extends Controller
         }
 
         if ($chiTiet && $chiTiet->donHang->user_id == Auth::id() && $chiTiet->donHang->trang_thai == DonHang::STATUS_CART) {
-            // (Nên kiểm tra số lượng tồn kho ở đây)
             $chiTiet->so_luong = $so_luong_moi;
             $chiTiet->save();
             return back()->with('success', 'Cập nhật số lượng thành công');
@@ -196,6 +173,7 @@ class DonHangController extends Controller
         }
 
         $statusOptions = DonHang::statusOptions();
+        unset($statusOptions[4]);
 
         return view('home.orders.index', compact('orders', 'statusOptions'));
     }

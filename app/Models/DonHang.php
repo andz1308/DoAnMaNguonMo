@@ -27,7 +27,7 @@ class DonHang extends Model
     public static function statusOptions(): array
     {
         return [
-            self::STATUS_PENDING => 'Chờ xử lý',//Chờ thanh toán
+            self::STATUS_PENDING => 'Đang thanh toán',//Chờ thanh toán
             self::STATUS_PROCESSING => 'Đang xử lý',//Đã thanh toán, chờ admin xử lý
             self::STATUS_COMPLETED => 'Hoàn thành',
             self::STATUS_CANCELLED => 'Đã hủy',

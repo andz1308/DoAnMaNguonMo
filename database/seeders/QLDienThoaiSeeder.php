@@ -28,6 +28,7 @@ class QLDienThoaiSeeder extends Seeder
                 'dia_chi' => '123 ltt',
                 'password' => bcrypt('123'),
                 'gioi_tinh' => 'Nam',
+                'trang_thai' => 1,
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -39,6 +40,7 @@ class QLDienThoaiSeeder extends Seeder
                 'dia_chi' => '456 ltt',
                 'password' => bcrypt('123456'),
                 'gioi_tinh' => 'Nu',
+                'trang_thai' => 1,
                 'created_at' => now(),
                 'updated_at' => now()
             ]

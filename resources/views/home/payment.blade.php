@@ -300,6 +300,7 @@
         </div>
 
         <!-- Cột phải: Chi tiết đơn hàng -->
+        <!-- Cột phải: Chi tiết đơn hàng -->
         <div class="span5">
             <div class="order-detail-card">
                 <h4><i class="icon-list-alt"></i> Chi tiết đơn hàng</h4>
@@ -314,11 +315,29 @@
                     </thead>
                     <tbody>
                         @foreach($donHang->chiTietDonHang as $item)
+                            @php
+                                // Tính thành tiền cho từng sản phẩm dựa trên giá bán thực tế (đã trừ KM)
+                                $thanhTienItem = $item->sanPham->gia_ban * $item->so_luong;
+                            @endphp
                             <tr>
-                                <td>{{ $item->sanPham->name }}</td>
+                                <td>
+                                    {{ $item->sanPham->name }}
+                                    @if($item->sanPham->gia > $item->sanPham->gia_ban)
+                                        <br><small style="color: red;">(Đã giảm giá)</small>
+                                    @endif
+                                </td>
                                 <td style="text-align: center;">{{ $item->so_luong }}</td>
                                 <td style="text-align: right;">
-                                    {{ number_format($item->sanPham->gia * $item->so_luong, 0, ',', '.') }}₫</td>
+                                    <!-- Hiển thị giá gốc gạch ngang nếu có KM -->
+                                    @if($item->sanPham->gia > $item->sanPham->gia_ban)
+                                        <span style="text-decoration: line-through; color: #999; font-size: 0.9em;">
+                                            {{ number_format($item->sanPham->gia * $item->so_luong, 0, ',', '.') }}₫
+                                        </span>
+                                        <br>
+                                    @endif
+                                    <!-- Giá thực tế -->
+                                    {{ number_format($thanhTienItem, 0, ',', '.') }}₫
+                                </td>
                             </tr>
                         @endforeach
                         <tr class="total-row">

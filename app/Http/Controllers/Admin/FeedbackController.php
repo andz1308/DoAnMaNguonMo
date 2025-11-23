@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Feedback;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
+use App\Models\DanhGia;
+use Illuminate\Support\Facades\Auth;
 
 class FeedbackController extends Controller
 {
@@ -133,5 +135,30 @@ class FeedbackController extends Controller
     {
         Feedback::whereIn('id', $request->ids)->delete();
         return response()->json(['success' => true]);
+    }
+
+
+    public function postReview(Request $request, $id)
+    {
+        // 1. Validate dữ liệu
+        $request->validate([
+            'vote' => 'required|integer|min:1|max:5',
+            'noi_dung' => 'required|string|min:5',
+        ], [
+            'vote.required' => 'Vui lòng chọn số sao.',
+            'noi_dung.required' => 'Vui lòng nhập nội dung đánh giá.',
+            'noi_dung.min' => 'Nội dung đánh giá quá ngắn.',
+        ]);
+
+        // 2. Lưu vào DB
+        DanhGia::create([
+            'user_id' => Auth::check() ? Auth::id() : null, 
+            'san_pham_id' => $id,
+            'noi_dung' => $request->noi_dung,
+            'vote' => $request->vote,
+        ]);
+
+        // 3. Quay lại trang chi tiết sản phẩm kèm thông báo
+        return redirect()->back()->with('success', 'Cảm ơn bạn đã đánh giá sản phẩm!');
     }
 }

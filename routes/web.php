@@ -23,7 +23,7 @@ Route::get('/search', [HomeController::class, 'search'])->name('search');
 Route::get('/products/by-brand', [HomeController::class, 'productsByBrand'])->name('products.by-brand');
 Route::get('/products/by-category/{categoryId}', [HomeController::class, 'productsByCategory'])->name('products.by-category');
 Route::get('/products/{id}', [HomeController::class, 'show'])->name('products.show');
-
+Route::post('/products/{id}/review', [FeedbackController::class, 'postReview'])->name('products.review');
 
 // --- Routes cho Đăng ký ---
 Route::get('/register', [UserUsersController::class, 'showRegisterForm'])->name('register');
@@ -40,11 +40,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders', [UserDonHangController::class, 'index'])->name('user.orders.index');
     Route::get('/orders/{id}', [UserDonHangController::class, 'show'])->name('user.orders.show');
 });
-
-// // Đặt các route admin vào một nhóm để dễ quản lý
-// Route::prefix('admin')->name('admin.')->group(function () {
-//     Route::resource('san_pham', SanPhamController::class);
-// });
 
 
 // Đặt các route admin vào một nhóm để dễ quản lý
@@ -96,9 +91,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
 Route::get('/add-to-cart/{id}', [UserDonHangController::class, 'addToCart'])->name('cart.add');
 
 Route::middleware(['auth'])->group(function () {
-    // Route thêm vào giỏ hàng (thường là POST hoặc GET)
-    // Dùng POST an toàn hơn nếu bạn dùng form, GET nếu dùng link
-
     // Route xem giỏ hàng
     Route::get('/cart', [UserDonHangController::class, 'viewCart'])->name('cart.index');
 
