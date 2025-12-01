@@ -269,11 +269,11 @@
                     @foreach($cart->chiTietDonHang as $item)
                         @php
                             $sanPham = $item->sanPham;
-                            
+
                             // --- SỬA ĐỔI QUAN TRỌNG: TÍNH GIÁ BÁN (ĐÃ TRỪ KHUYẾN MÃI) ---
                             // Sử dụng accessor getGiaBanAttribute() từ Model SanPham
-                            $giaThucTe = $sanPham->gia_ban; 
-                            
+                            $giaThucTe = $sanPham->gia_ban;
+
                             // Tính thành tiền dựa trên giá thực tế
                             $thanhTien = $giaThucTe * $item->so_luong;
 
@@ -295,7 +295,7 @@
                             </td>
                             <td>
                                 <div class="product-name-cart">{{ $sanPham->name }}</div>
-                                
+
                                 <!-- Hiển thị thông tin khuyến mãi nếu có -->
                                 @if($sanPham->gia > $sanPham->gia_ban)
                                     <span class="label label-important">Đang giảm giá</span>
@@ -315,7 +315,8 @@
                             <td>
                                 <form action="{{ route('cart.update', $item->id) }}" method="POST" class="quantity-form">
                                     @csrf
-                                    <input name="so_luong" type="number" min="1" value="{{ $item->so_luong }}" class="quantity-input">
+                                    <input name="so_luong" type="number" min="1" value="{{ $item->so_luong }}"
+                                        class="quantity-input">
 
                                     <button class="btn btn-success btn-small btn-update-cart" type="submit" title="Cập nhật">
                                         <i class="icon-refresh icon-white"></i>
@@ -374,6 +375,24 @@
                         <label>Người nhận:</label>
                         <div class="user-info-display">
                             <i class="icon-user"></i> {{ Auth::user()->name }}
+                        </div>
+                    </div>
+
+                    <div class="form-group-cart" style="margin-top: 15px;">
+                        <label>Phương thức thanh toán:</label>
+                        <div style="border: 1px solid #ccc; padding: 10px; border-radius: 4px; background: #f9f9f9;">
+                            <label class="radio" style="display: block; margin-bottom: 10px; cursor: pointer;">
+                                <input type="radio" name="payment_method" value="qr" checked>
+                                <span style="font-weight: normal;">
+                                    <i class="icon-qrcode"></i> Chuyển khoản ngân hàng (VietQR)
+                                </span>
+                            </label>
+                            <label class="radio" style="display: block; cursor: pointer;">
+                                <input type="radio" name="payment_method" value="cod">
+                                <span style="font-weight: normal;">
+                                    <i class="icon-money"></i> Thanh toán khi nhận hàng (COD)
+                                </span>
+                            </label>
                         </div>
                     </div>
 

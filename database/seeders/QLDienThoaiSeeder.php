@@ -45,6 +45,189 @@ class QLDienThoaiSeeder extends Seeder
                 'updated_at' => now()
             ]
         ]);
+        DB::table('users')->insert([
+            [
+                'role_id' => 2,
+                'name' => 'Nguyen Van A',
+                'email' => 'a@gmail.com',
+                'dien_thoai' => '0900000001',
+                'dia_chi' => 'Dia chi 1',
+                'password' => bcrypt('123456'),
+                'gioi_tinh' => 'Nam',
+                'trang_thai' => 1,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'role_id' => 2,
+                'name' => 'Nguyen Van B',
+                'email' => 'b@gmail.com',
+                'dien_thoai' => '0900000002',
+                'dia_chi' => 'Dia chi 2',
+                'password' => bcrypt('123456'),
+                'gioi_tinh' => 'Nu',
+                'trang_thai' => 1,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'role_id' => 2,
+                'name' => 'Nguyen Van C',
+                'email' => 'c@gmail.com',
+                'dien_thoai' => '0900000003',
+                'dia_chi' => 'Dia chi 3',
+                'password' => bcrypt('123456'),
+                'gioi_tinh' => 'Nam',
+                'trang_thai' => 1,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'role_id' => 2,
+                'name' => 'Nguyen Van D',
+                'email' => 'd@gmail.com',
+                'dien_thoai' => '0900000004',
+                'dia_chi' => 'Dia chi 4',
+                'password' => bcrypt('123456'),
+                'gioi_tinh' => 'Nu',
+                'trang_thai' => 1,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'role_id' => 2,
+                'name' => 'Nguyen Van E',
+                'email' => 'e@gmail.com',
+                'dien_thoai' => '0900000005',
+                'dia_chi' => 'Dia chi 5',
+                'password' => bcrypt('123456'),
+                'gioi_tinh' => 'Nam',
+                'trang_thai' => 1,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'role_id' => 2,
+                'name' => 'Nguyen Van F',
+                'email' => 'f@gmail.com',
+                'dien_thoai' => '0900000006',
+                'dia_chi' => 'Dia chi 6',
+                'password' => bcrypt('123456'),
+                'gioi_tinh' => 'Nu',
+                'trang_thai' => 1,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'role_id' => 2,
+                'name' => 'Nguyen Van G',
+                'email' => 'g@gmail.com',
+                'dien_thoai' => '0900000007',
+                'dia_chi' => 'Dia chi 7',
+                'password' => bcrypt('123456'),
+                'gioi_tinh' => 'Nam',
+                'trang_thai' => 1,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'role_id' => 2,
+                'name' => 'Nguyen Van H',
+                'email' => 'h@gmail.com',
+                'dien_thoai' => '0900000008',
+                'dia_chi' => 'Dia chi 8',
+                'password' => bcrypt('123456'),
+                'gioi_tinh' => 'Nu',
+                'trang_thai' => 1,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'role_id' => 2,
+                'name' => 'Nguyen Van I',
+                'email' => 'i@gmail.com',
+                'dien_thoai' => '0900000009',
+                'dia_chi' => 'Dia chi 9',
+                'password' => bcrypt('123456'),
+                'gioi_tinh' => 'Nam',
+                'trang_thai' => 1,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'role_id' => 2,
+                'name' => 'Nguyen Van J',
+                'email' => 'j@gmail.com',
+                'dien_thoai' => '0900000010',
+                'dia_chi' => 'Dia chi 10',
+                'password' => bcrypt('123456'),
+                'gioi_tinh' => 'Nu',
+                'trang_thai' => 1,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'role_id' => 2,
+                'name' => 'Nguyen Van K',
+                'email' => 'k@gmail.com',
+                'dien_thoai' => '0900000011',
+                'dia_chi' => 'Dia chi 11',
+                'password' => bcrypt('123456'),
+                'gioi_tinh' => 'Nam',
+                'trang_thai' => 1,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'role_id' => 2,
+                'name' => 'Nguyen Van L',
+                'email' => 'l@gmail.com',
+                'dien_thoai' => '0900000012',
+                'dia_chi' => 'Dia chi 12',
+                'password' => bcrypt('123456'),
+                'gioi_tinh' => 'Nu',
+                'trang_thai' => 1,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'role_id' => 2,
+                'name' => 'Nguyen Van M',
+                'email' => 'm@gmail.com',
+                'dien_thoai' => '0900000013',
+                'dia_chi' => 'Dia chi 13',
+                'password' => bcrypt('123456'),
+                'gioi_tinh' => 'Nam',
+                'trang_thai' => 1,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'role_id' => 2,
+                'name' => 'Nguyen Van N',
+                'email' => 'n@gmail.com',
+                'dien_thoai' => '0900000014',
+                'dia_chi' => 'Dia chi 14',
+                'password' => bcrypt('123456'),
+                'gioi_tinh' => 'Nu',
+                'trang_thai' => 1,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'role_id' => 2,
+                'name' => 'Nguyen Van O',
+                'email' => 'o@gmail.com',
+                'dien_thoai' => '0900000015',
+                'dia_chi' => 'Dia chi 15',
+                'password' => bcrypt('123456'),
+                'gioi_tinh' => 'Nam',
+                'trang_thai' => 1,
+                'created_at' => now(),
+                'updated_at' => now()
+            ]
+        ]);
+
 
         // Bảng loai_san_pham
         DB::table('loai_san_pham')->insert([
@@ -842,6 +1025,24 @@ class QLDienThoaiSeeder extends Seeder
                 'updated_at' => now()
             ]
         ]);
+        DB::table('don_hang')->insert([
+            ['id' => 3, 'ghi_chu' => 'Don hang KH3', 'trang_thai' => 1, 'user_id' => 3, 'created_at' => now(), 'updated_at' => now()],
+            ['id' => 4, 'ghi_chu' => 'Don hang KH4', 'trang_thai' => 0, 'user_id' => 4, 'created_at' => now(), 'updated_at' => now()],
+            ['id' => 5, 'ghi_chu' => 'Don hang KH5', 'trang_thai' => 1, 'user_id' => 5, 'created_at' => now(), 'updated_at' => now()],
+            ['id' => 6, 'ghi_chu' => 'Don hang KH6', 'trang_thai' => 1, 'user_id' => 6, 'created_at' => now(), 'updated_at' => now()],
+            ['id' => 7, 'ghi_chu' => 'Don hang KH7', 'trang_thai' => 0, 'user_id' => 7, 'created_at' => now(), 'updated_at' => now()],
+            ['id' => 8, 'ghi_chu' => 'Don hang KH8', 'trang_thai' => 1, 'user_id' => 8, 'created_at' => now(), 'updated_at' => now()],
+            ['id' => 9, 'ghi_chu' => 'Don hang KH9', 'trang_thai' => 1, 'user_id' => 9, 'created_at' => now(), 'updated_at' => now()],
+            ['id' => 10, 'ghi_chu' => 'Don hang KH10', 'trang_thai' => 1, 'user_id' => 10, 'created_at' => now(), 'updated_at' => now()],
+            ['id' => 11, 'ghi_chu' => 'Don hang KH11', 'trang_thai' => 0, 'user_id' => 11, 'created_at' => now(), 'updated_at' => now()],
+            ['id' => 12, 'ghi_chu' => 'Don hang KH12', 'trang_thai' => 1, 'user_id' => 12, 'created_at' => now(), 'updated_at' => now()],
+            ['id' => 13, 'ghi_chu' => 'Don hang KH13', 'trang_thai' => 1, 'user_id' => 13, 'created_at' => now(), 'updated_at' => now()],
+            ['id' => 14, 'ghi_chu' => 'Don hang KH14', 'trang_thai' => 0, 'user_id' => 14, 'created_at' => now(), 'updated_at' => now()],
+            ['id' => 15, 'ghi_chu' => 'Don hang KH15', 'trang_thai' => 1, 'user_id' => 15, 'created_at' => now(), 'updated_at' => now()],
+            ['id' => 16, 'ghi_chu' => 'Don hang KH16', 'trang_thai' => 1, 'user_id' => 16, 'created_at' => now(), 'updated_at' => now()],
+            ['id' => 17, 'ghi_chu' => 'Don hang KH17', 'trang_thai' => 0, 'user_id' => 17, 'created_at' => now(), 'updated_at' => now()],
+        ]);
+
 
         // Bảng chi_tiet_don_hang
         DB::table('chi_tiet_don_hang')->insert([
@@ -860,6 +1061,24 @@ class QLDienThoaiSeeder extends Seeder
                 'updated_at' => now()
             ]
         ]);
+        DB::table('chi_tiet_don_hang')->insert([
+            ['so_luong' => 1, 'san_pham_id' => 1, 'don_hang_id' => 3, 'created_at' => now(), 'updated_at' => now()],
+            ['so_luong' => 2, 'san_pham_id' => 2, 'don_hang_id' => 4, 'created_at' => now(), 'updated_at' => now()],
+            ['so_luong' => 1, 'san_pham_id' => 3, 'don_hang_id' => 5, 'created_at' => now(), 'updated_at' => now()],
+            ['so_luong' => 3, 'san_pham_id' => 1, 'don_hang_id' => 6, 'created_at' => now(), 'updated_at' => now()],
+            ['so_luong' => 1, 'san_pham_id' => 4, 'don_hang_id' => 7, 'created_at' => now(), 'updated_at' => now()],
+            ['so_luong' => 2, 'san_pham_id' => 1, 'don_hang_id' => 8, 'created_at' => now(), 'updated_at' => now()],
+            ['so_luong' => 1, 'san_pham_id' => 2, 'don_hang_id' => 9, 'created_at' => now(), 'updated_at' => now()],
+            ['so_luong' => 2, 'san_pham_id' => 5, 'don_hang_id' => 10, 'created_at' => now(), 'updated_at' => now()],
+            ['so_luong' => 3, 'san_pham_id' => 2, 'don_hang_id' => 11, 'created_at' => now(), 'updated_at' => now()],
+            ['so_luong' => 1, 'san_pham_id' => 1, 'don_hang_id' => 12, 'created_at' => now(), 'updated_at' => now()],
+            ['so_luong' => 2, 'san_pham_id' => 4, 'don_hang_id' => 13, 'created_at' => now(), 'updated_at' => now()],
+            ['so_luong' => 1, 'san_pham_id' => 3, 'don_hang_id' => 14, 'created_at' => now(), 'updated_at' => now()],
+            ['so_luong' => 2, 'san_pham_id' => 1, 'don_hang_id' => 15, 'created_at' => now(), 'updated_at' => now()],
+            ['so_luong' => 1, 'san_pham_id' => 5, 'don_hang_id' => 16, 'created_at' => now(), 'updated_at' => now()],
+            ['so_luong' => 3, 'san_pham_id' => 4, 'don_hang_id' => 17, 'created_at' => now(), 'updated_at' => now()],
+        ]);
+
 
         // Bảng khuyen_mai
         DB::table('khuyen_mai')->insert([
@@ -924,24 +1143,133 @@ class QLDienThoaiSeeder extends Seeder
                 'updated_at' => now()
             ]
         ]);
+        DB::table('danh_gia')->insert([
+
+            // --- Sản phẩm 1 ---
+            ['user_id' => 1, 'san_pham_id' => 1, 'noi_dung' => 'Sản phẩm chất lượng', 'vote' => 5, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 2, 'san_pham_id' => 1, 'noi_dung' => 'Good product', 'vote' => 5, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 3, 'san_pham_id' => 1, 'noi_dung' => 'Đáng tiền, dùng rất ổn', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 4, 'san_pham_id' => 1, 'noi_dung' => 'Thiết kế đẹp, hiệu năng mạnh', 'vote' => 5, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 5, 'san_pham_id' => 1, 'noi_dung' => 'Giao hàng nhanh, đóng gói cẩn thận', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+
+            // --- Sản phẩm 2 ---
+            ['user_id' => 2, 'san_pham_id' => 2, 'noi_dung' => 'Average product', 'vote' => 3, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 3, 'san_pham_id' => 2, 'noi_dung' => 'Tạm ổn, giá hợp lý', 'vote' => 3, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 4, 'san_pham_id' => 2, 'noi_dung' => 'Sử dụng ổn nhưng hơi nóng', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 6, 'san_pham_id' => 2, 'noi_dung' => 'Chất lượng tương xứng với giá', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 7, 'san_pham_id' => 2, 'noi_dung' => 'Khá hài lòng, dùng tốt', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+
+            // --- Sản phẩm 3 ---
+            ['user_id' => 3, 'san_pham_id' => 3, 'noi_dung' => 'Sản phẩm ổn trong tầm giá', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 4, 'san_pham_id' => 3, 'noi_dung' => 'Chất lượng tốt, pin khỏe', 'vote' => 5, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 8, 'san_pham_id' => 3, 'noi_dung' => 'Hài lòng, sẽ ủng hộ lần sau', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 9, 'san_pham_id' => 3, 'noi_dung' => 'Giao hàng nhanh, sản phẩm tốt', 'vote' => 5, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 5, 'san_pham_id' => 3, 'noi_dung' => 'Dùng ổn định, không lỗi vặt', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+
+            // --- Sản phẩm 4 ---
+            ['user_id' => 2, 'san_pham_id' => 4, 'noi_dung' => 'Sản phẩm đẹp, dùng bền', 'vote' => 5, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 6, 'san_pham_id' => 4, 'noi_dung' => 'Ổn, nhưng giá hơi cao', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 3, 'san_pham_id' => 4, 'noi_dung' => 'Hoạt động tốt, đáng mua', 'vote' => 5, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 10, 'san_pham_id' => 4, 'noi_dung' => 'Sẽ giới thiệu cho bạn bè', 'vote' => 5, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 4, 'san_pham_id' => 4, 'noi_dung' => 'Sản phẩm dùng ổn nhưng giao hàng chậm', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+
+            // --- Sản phẩm 5 ---
+            ['user_id' => 1, 'san_pham_id' => 5, 'noi_dung' => 'Giá rẻ, chất lượng ok', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 2, 'san_pham_id' => 5, 'noi_dung' => 'Dùng tạm được, phù hợp giá tiền', 'vote' => 3, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 5, 'san_pham_id' => 5, 'noi_dung' => 'Ổn, không đòi hỏi gì thêm', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 7, 'san_pham_id' => 5, 'noi_dung' => 'Giao nhanh, sản phẩm phù hợp', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 9, 'san_pham_id' => 5, 'noi_dung' => 'Chất lượng tốt so với giá', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+
+            // --- Sản phẩm 6 ---
+            ['user_id' => 1, 'san_pham_id' => 6, 'noi_dung' => 'Siêu phẩm, hiệu năng cực mạnh', 'vote' => 5, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 2, 'san_pham_id' => 6, 'noi_dung' => 'Rất hài lòng với thiết kế', 'vote' => 5, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 3, 'san_pham_id' => 6, 'noi_dung' => 'Camera xuất sắc', 'vote' => 5, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 4, 'san_pham_id' => 6, 'noi_dung' => 'Màu sắc đẹp, đáng tiền', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 5, 'san_pham_id' => 6, 'noi_dung' => 'Pin trâu, dùng thoải mái', 'vote' => 5, 'created_at' => now(), 'updated_at' => now()],
+
+            // --- Sản phẩm 7 ---
+            ['user_id' => 2, 'san_pham_id' => 7, 'noi_dung' => 'Điện thoại giá rẻ, ổn', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 3, 'san_pham_id' => 7, 'noi_dung' => 'Phù hợp học sinh, sinh viên', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 6, 'san_pham_id' => 7, 'noi_dung' => 'Dùng bình thường, không có gì đặc biệt', 'vote' => 3, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 7, 'san_pham_id' => 7, 'noi_dung' => 'Nhỏ gọn, tiện dụng', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 8, 'san_pham_id' => 7, 'noi_dung' => 'Màu đẹp, thiết kế ok', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+
+            // --- Sản phẩm 8 ---
+            ['user_id' => 1, 'san_pham_id' => 8, 'noi_dung' => 'iPhone đời cũ nhưng vẫn ổn', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 2, 'san_pham_id' => 8, 'noi_dung' => 'Dùng tốt, pin ổn', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 3, 'san_pham_id' => 8, 'noi_dung' => 'Thiết kế sang trọng', 'vote' => 5, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 4, 'san_pham_id' => 8, 'noi_dung' => 'Màn hình đẹp, dùng đã', 'vote' => 5, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 5, 'san_pham_id' => 8, 'noi_dung' => 'Hiệu năng đủ dùng hằng ngày', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+
+            // --- Sản phẩm 9 ---
+            ['user_id' => 2, 'san_pham_id' => 9, 'noi_dung' => 'Điện thoại gập thú vị, độc đáo', 'vote' => 5, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 3, 'san_pham_id' => 9, 'noi_dung' => 'Camera ổn, pin tốt', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 4, 'san_pham_id' => 9, 'noi_dung' => 'Thiết kế gọn nhẹ, tiện lợi', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 5, 'san_pham_id' => 9, 'noi_dung' => 'Sử dụng ổn, nhưng hơi đắt', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 6, 'san_pham_id' => 9, 'noi_dung' => 'Đẹp, sang trọng, đáng mua', 'vote' => 5, 'created_at' => now(), 'updated_at' => now()],
+
+            // --- Sản phẩm 10 ---
+            ['user_id' => 1, 'san_pham_id' => 10, 'noi_dung' => 'Giá rẻ, chất lượng tốt', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 2, 'san_pham_id' => 10, 'noi_dung' => 'Dùng ổn, vừa túi tiền', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 3, 'san_pham_id' => 10, 'noi_dung' => 'Hiệu năng tốt trong tầm giá', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 4, 'san_pham_id' => 10, 'noi_dung' => 'Thiết kế đẹp, gọn gàng', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 5, 'san_pham_id' => 10, 'noi_dung' => 'Pin ổn, dùng thoải mái', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+
+            // --- Sản phẩm 11 ---
+            ['user_id' => 1, 'san_pham_id' => 11, 'noi_dung' => 'Galaxy A05s, ổn cho giá', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 2, 'san_pham_id' => 11, 'noi_dung' => 'Dùng tốt, phù hợp sinh viên', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 3, 'san_pham_id' => 11, 'noi_dung' => 'Pin dùng lâu, màn hình ok', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 4, 'san_pham_id' => 11, 'noi_dung' => 'Thiết kế ổn, giao hàng nhanh', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 5, 'san_pham_id' => 11, 'noi_dung' => 'Dùng ổn định, không lỗi vặt', 'vote' => 4, 'created_at' => now(), 'updated_at' => now()],
+
+            // --- Sản phẩm 12 ---
+            ['user_id' => 1, 'san_pham_id' => 12, 'noi_dung' => 'OPPO Find N3, flagship mạnh', 'vote' => 5, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 2, 'san_pham_id' => 12, 'noi_dung' => 'Hiệu năng xuất sắc, camera tốt', 'vote' => 5, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 3, 'san_pham_id' => 12, 'noi_dung' => 'Màn hình đẹp, dùng thích', 'vote' => 5, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 4, 'san_pham_id' => 12, 'noi_dung' => 'Đáng đồng tiền, rất hài lòng', 'vote' => 5, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 5, 'san_pham_id' => 12, 'noi_dung' => 'Thiết kế sang trọng, pin tốt', 'vote' => 5, 'created_at' => now(), 'updated_at' => now()],
+
+        ]);
+
 
         // Bảng thanh_toan
         DB::table('thanh_toan')->insert([
             [
                 'don_hang_id' => 1,
                 'ngay_thanh_toan' => now(),
-                'tong_tien' => 35000000,
+                'tong_tien' => 34000000,
+                'phuong_thuc' => 'qr', // Đã thêm
                 'created_at' => now(),
                 'updated_at' => now()
             ],
             [
                 'don_hang_id' => 2,
                 'ngay_thanh_toan' => now(),
-                'tong_tien' => 50000000,
+                'tong_tien' => 28790000,
+                'phuong_thuc' => 'qr', // Đã thêm
                 'created_at' => now(),
                 'updated_at' => now()
             ]
         ]);
+
+        DB::table('thanh_toan')->insert([
+            ['don_hang_id' => 3, 'ngay_thanh_toan' => '2025-01-10', 'tong_tien' => 34000000, 'phuong_thuc' => 'cod', 'created_at' => now(), 'updated_at' => now()],
+            ['don_hang_id' => 4, 'ngay_thanh_toan' => '2025-02-05', 'tong_tien' => 57580000, 'phuong_thuc' => 'qr', 'created_at' => now(), 'updated_at' => now()],
+            ['don_hang_id' => 5, 'ngay_thanh_toan' => '2025-03-12', 'tong_tien' => 21990000, 'phuong_thuc' => 'cod', 'created_at' => now(), 'updated_at' => now()],
+            ['don_hang_id' => 6, 'ngay_thanh_toan' => '2025-04-08', 'tong_tien' => 102000000, 'phuong_thuc' => 'qr', 'created_at' => now(), 'updated_at' => now()],
+            ['don_hang_id' => 7, 'ngay_thanh_toan' => '2025-05-20', 'tong_tien' => 24990000, 'phuong_thuc' => 'cod', 'created_at' => now(), 'updated_at' => now()],
+            ['don_hang_id' => 8, 'ngay_thanh_toan' => '2025-06-15', 'tong_tien' => 68000000, 'phuong_thuc' => 'qr', 'created_at' => now(), 'updated_at' => now()],
+            ['don_hang_id' => 9, 'ngay_thanh_toan' => '2025-07-09', 'tong_tien' => 28790000, 'phuong_thuc' => 'cod', 'created_at' => now(), 'updated_at' => now()],
+            ['don_hang_id' => 10, 'ngay_thanh_toan' => '2025-08-18', 'tong_tien' => 4780000, 'phuong_thuc' => 'cod', 'created_at' => now(), 'updated_at' => now()],
+            ['don_hang_id' => 11, 'ngay_thanh_toan' => '2025-09-22', 'tong_tien' => 86370000, 'phuong_thuc' => 'qr', 'created_at' => now(), 'updated_at' => now()],
+            ['don_hang_id' => 12, 'ngay_thanh_toan' => '2025-10-05', 'tong_tien' => 34000000, 'phuong_thuc' => 'qr', 'created_at' => now(), 'updated_at' => now()],
+            ['don_hang_id' => 13, 'ngay_thanh_toan' => '2025-11-11', 'tong_tien' => 49980000, 'phuong_thuc' => 'cod', 'created_at' => now(), 'updated_at' => now()],
+            ['don_hang_id' => 14, 'ngay_thanh_toan' => '2025-12-02', 'tong_tien' => 21990000, 'phuong_thuc' => 'cod', 'created_at' => now(), 'updated_at' => now()],
+            ['don_hang_id' => 15, 'ngay_thanh_toan' => '2025-03-28', 'tong_tien' => 68000000, 'phuong_thuc' => 'qr', 'created_at' => now(), 'updated_at' => now()],
+            ['don_hang_id' => 16, 'ngay_thanh_toan' => '2025-07-25', 'tong_tien' => 2390000, 'phuong_thuc' => 'cod', 'created_at' => now(), 'updated_at' => now()],
+            ['don_hang_id' => 17, 'ngay_thanh_toan' => '2025-11-28', 'tong_tien' => 74970000, 'phuong_thuc' => 'qr', 'created_at' => now(), 'updated_at' => now()],
+        ]);
+
     }
 }
 ;

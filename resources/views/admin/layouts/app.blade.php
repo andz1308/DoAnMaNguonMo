@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Admin Dashboard') - Quản Trị</title>
-    
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -48,8 +49,8 @@
         .sidebar-header {
             padding: 20px;
             text-align: center;
-            background-color: rgba(0,0,0,0.2);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            background-color: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .sidebar-header h3 {
@@ -71,7 +72,7 @@
             display: flex;
             align-items: center;
             padding: 12px 20px;
-            color: rgba(255,255,255,0.8);
+            color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
             transition: all 0.3s;
         }
@@ -105,7 +106,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 0 30px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             z-index: 100;
         }
 
@@ -148,7 +149,7 @@
             background: white;
             border-radius: 8px;
             padding: 20px;
-            box-shadow: 0 0.15rem 1.75rem 0 rgba(58,59,69,0.15);
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
             border-left: 4px solid;
             transition: transform 0.3s;
         }
@@ -183,7 +184,7 @@
             background: white;
             border-radius: 8px;
             padding: 20px;
-            box-shadow: 0 0.15rem 1.75rem 0 rgba(58,59,69,0.15);
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
         }
 
         .table thead th {
@@ -228,6 +229,7 @@
     </style>
     @stack('styles')
 </head>
+
 <body>
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
@@ -236,43 +238,50 @@
         </div>
         <ul class="sidebar-menu">
             <li>
-                <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                <a href="{{ route('admin.dashboard') }}"
+                    class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                     <i class="fas fa-tachometer-alt"></i>
                     <span>Trang chủ</span>
                 </a>
             </li>
             <li>
-                <a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.users.index') }}"
+                    class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
                     <i class="fas fa-users"></i>
                     <span>Quản lý người dùng</span>
                 </a>
             </li>
             <li>
-                <a href="{{ route('admin.san_pham.index') }}" class="{{ request()->routeIs('admin.san_pham.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.san_pham.index') }}"
+                    class="{{ request()->routeIs('admin.san_pham.*') ? 'active' : '' }}">
                     <i class="fas fa-box"></i>
                     <span>Quản lý sản phẩm</span>
                 </a>
             </li>
             <li>
-                <a href="{{ route('admin.reviews.index') }}" class="{{ request()->routeIs('admin.reviews.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.reviews.index') }}"
+                    class="{{ request()->routeIs('admin.reviews.*') ? 'active' : '' }}">
                     <i class="fas fa-star"></i>
                     <span>Quản lý đánh giá</span>
                 </a>
             </li>
             <li>
-                <a href="{{ route('admin.don_hang.index') }}" class="{{ request()->routeIs('admin.don_hang.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.don_hang.index') }}"
+                    class="{{ request()->routeIs('admin.don_hang.*') ? 'active' : '' }}">
                     <i class="fas fa-shopping-cart"></i>
                     <span>Quản lý đơn hàng</span>
                 </a>
             </li>
             <li>
-                <a href="{{ route('admin.khuyen_mai.index') }}" class="{{ request()->routeIs('admin.khuyen_mai.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.khuyen_mai.index') }}"
+                    class="{{ request()->routeIs('admin.khuyen_mai.*') ? 'active' : '' }}">
                     <i class="fas fa-tags"></i>
                     <span>Quản lý khuyến mãi</span>
                 </a>
             </li>
             <li>
-                <a href="{{ route('admin.reports.index') }}" class="{{ request()->routeIs('admin.reports.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.reports.index') }}"
+                    class="{{ request()->routeIs('admin.reports.*') ? 'active' : '' }}">
                     <i class="fas fa-chart-bar"></i>
                     <span>Báo cáo thống kê</span>
                 </a>
@@ -322,8 +331,21 @@
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="#"><i class="fas fa-user-circle me-2"></i>Hồ sơ</a></li>
                             <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Cài đặt</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Đăng xuất</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                    style="display: none;">
+                                    @csrf
+                                </form>
+
+                                <a class="dropdown-item"  href="#"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                                    style="background-color:bisque">
+                                    Đăng xuất
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -354,19 +376,20 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    
+
     <script>
         // Sidebar Toggle
-        document.getElementById('sidebarToggle')?.addEventListener('click', function() {
+        document.getElementById('sidebarToggle')?.addEventListener('click', function () {
             document.getElementById('sidebar').classList.toggle('active');
         });
 
         // Auto-hide alerts after 5 seconds
-        setTimeout(function() {
+        setTimeout(function () {
             $('.alert').fadeOut('slow');
         }, 5000);
     </script>
-    
+
     @stack('scripts')
 </body>
+
 </html>

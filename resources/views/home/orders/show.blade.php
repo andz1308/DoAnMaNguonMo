@@ -60,7 +60,7 @@
                 </h4>
                 <div style="margin-bottom: 10px;">
                     <span style="color: #888; font-size: 14px;">Phương thức:</span>
-                    <span style="color: #333; font-weight: 500;">Chuyển khoản / QR Code</span>
+                    <span style="color: #333; font-weight: 500;">{{ $order->thanhToan->phuong_thuc ?? 'Chưa có phương thức' }}</span>
                 </div>
                 <div>
                     <span style="color: #888; font-size: 14px;">Thời gian thanh toán:</span>

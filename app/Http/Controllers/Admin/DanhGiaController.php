@@ -22,20 +22,17 @@ class DanhGiaController extends Controller
                     $qu->where('name', 'like', "%{$search}%");
                 })
                 ->orWhereHas('sanPham', function($qs) use ($search) {
-                    // DB column is `name` (migration uses `name`).
-                    // Search against `name` to avoid unknown column errors.
+
                     $qs->where('name', 'like', "%{$search}%");
                 })
                 ->orWhere('noi_dung', 'like', "%{$search}%");
             });
         }
 
-        // Filter by rating
         if ($request->has('rating') && $request->rating) {
             $query->where('vote', $request->rating);
         }
 
-        // Filter by product
         if ($request->has('product') && $request->product) {
             $query->where('san_pham_id', $request->product);
         }
@@ -43,10 +40,8 @@ class DanhGiaController extends Controller
     $dateCol = Schema::hasColumn('danh_gia', 'created_at') ? 'created_at' : 'id';
     $reviews = $query->orderByDesc($dateCol)->paginate(15);
 
-        // select the real column (`name`).
         $products = SanPham::select('id', 'name')->get();
 
-        // Statistics
         $totalReviews = DanhGia::count();
         $averageRating = DanhGia::avg('vote');
         $fiveStarReviews = DanhGia::where('vote', 5)->count();
@@ -99,6 +94,7 @@ class DanhGiaController extends Controller
 
     public function destroy($id)
     {
+
         $review = DanhGia::findOrFail($id);
         $review->delete();
 

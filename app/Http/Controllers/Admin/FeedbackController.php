@@ -15,7 +15,6 @@ class FeedbackController extends Controller
     {
         $query = Feedback::with('user');
 
-        // Search
         if ($request->has('search') && $request->search) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
@@ -27,12 +26,10 @@ class FeedbackController extends Controller
             });
         }
 
-        // Filter by status
         if ($request->has('status') && $request->status !== '') {
             $query->where('trang_thai', $request->status);
         }
 
-        // Filter by type
         if ($request->has('type') && $request->type) {
             $query->where('loai', $request->type);
         }
@@ -40,7 +37,6 @@ class FeedbackController extends Controller
     $dateCol = Schema::hasColumn('feedback', 'created_at') ? 'created_at' : 'id';
     $feedbacks = $query->orderByDesc($dateCol)->paginate(15);
 
-        // Statistics
         $totalFeedback = Feedback::count();
         $pendingFeedback = Feedback::where('trang_thai', 0)->count();
         $processedFeedback = Feedback::where('trang_thai', 1)->count();

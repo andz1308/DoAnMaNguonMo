@@ -10,9 +10,7 @@ use Illuminate\Validation\Rule;
 
 class UserProfileController extends Controller
 {
-    /**
-     * Hiển thị thông tin hồ sơ người dùng
-     */
+
     public function show()
     {
         $user = Auth::user();
@@ -24,9 +22,7 @@ class UserProfileController extends Controller
         return view('user.profile', compact('user'));
     }
 
-    /**
-     * Hiển thị form chỉnh sửa thông tin người dùng
-     */
+
     public function edit()
     {
         $user = Auth::user();
@@ -38,9 +34,7 @@ class UserProfileController extends Controller
         return view('user.edit-profile', compact('user'));
     }
 
-    /**
-     * Cập nhật thông tin người dùng
-     */
+
     public function update(Request $request)
     {
         $user = Auth::user();
@@ -49,7 +43,6 @@ class UserProfileController extends Controller
             return redirect()->route('login')->with('error', 'Vui lòng đăng nhập');
         }
 
-        // Validate dữ liệu
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => [

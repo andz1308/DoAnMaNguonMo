@@ -9,106 +9,109 @@ use App\Models\ThanhToan;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
-
 class ReportController extends Controller
 {
     public function index(Request $request)
     {
-        $totalOrders = DonHang::count();
-        $totalUsers = User::count();
-        $totalRevenue = ThanhToan::sum('tong_tien');
-
-        // recent orders
-        $recentOrders = DonHang::with(['user', 'thanhToan'])->orderByDesc('id')->limit(10)->get();
-
-        // Chart parameters
-        $period = $request->get('period', 'daily'); // daily, monthly, yearly
+        $period = $request->get('period', 'daily');
         $start = $request->get('start_date');
         $end = $request->get('end_date');
+        $viewAll = $request->get('view_all'); 
 
-        // Default date range: last 30 days
-        $endDate = $end ? Carbon::parse($end) : Carbon::now();
-        $startDate = $start ? Carbon::parse($start) : $endDate->copy()->subDays(29);
+        if ($viewAll) {
+            $firstDate = ThanhToan::min('ngay_thanh_toan');
+            $startDate = $firstDate ? Carbon::parse($firstDate) : Carbon::now()->startOfYear();
+            $endDate = Carbon::now();
 
-        // Build series depending on period
+            $period = 'monthly';
+        } else {
+            $endDate = $end ? Carbon::parse($end)->endOfDay() : Carbon::now()->endOfDay();
+            $startDate = $start ? Carbon::parse($start)->startOfDay() : $endDate->copy()->subDays(29)->startOfDay();
+        }
+
+        
+        $totalOrders = DonHang::whereBetween('created_at', [$startDate, $endDate])->count();
+
+        
+        $totalUsers = User::count();
+
+        $totalRevenue = ThanhToan::whereBetween('ngay_thanh_toan', [$startDate, $endDate])->sum('tong_tien');
+
+        $recentOrders = DonHang::select('don_hang.*')
+            ->join('thanh_toan', 'don_hang.id', '=', 'thanh_toan.don_hang_id')
+            ->with(['user', 'thanhToan'])
+            ->whereBetween('thanh_toan.ngay_thanh_toan', [$startDate, $endDate]) 
+            ->orderByDesc('thanh_toan.ngay_thanh_toan')
+            ->limit(10)
+            ->get();
+
         $labels = [];
         $data = [];
 
-    // detect available date column on don_hang; fallback to thanh_toan.ngay_thanh_toan
-    $hasCreatedAt = Schema::hasColumn('don_hang', 'created_at');
-    $hasThanhToanDate = Schema::hasColumn('thanh_toan', 'ngay_thanh_toan');
 
-    if ($period === 'monthly') {
+        if ($period === 'monthly') {
             $periodStart = $startDate->copy()->startOfMonth();
             $periodEnd = $endDate->copy()->endOfMonth();
-            $months = [];
             $cursor = $periodStart->copy();
             while ($cursor->lte($periodEnd)) {
-                $months[] = $cursor->format('Y-m');
+                $labels[] = $cursor->format('m/Y');
+                $count = ThanhToan::whereYear('ngay_thanh_toan', $cursor->year)
+                    ->whereMonth('ngay_thanh_toan', $cursor->month)
+                    ->count(); 
+                $data[] = $count;
                 $cursor->addMonth();
             }
-
-            foreach ($months as $m) {
-                $labels[] = Carbon::parse($m . '-01')->format('M Y');
-                [$year, $mon] = explode('-', $m);
-                if ($hasCreatedAt) {
-                    $count = DonHang::whereYear('created_at', $year)->whereMonth('created_at', $mon)->count();
-                } elseif ($hasThanhToanDate) {
-                    $count = DonHang::whereHas('thanhToan', function($q) use ($year, $mon) {
-                        $q->whereYear('ngay_thanh_toan', $year)->whereMonth('ngay_thanh_toan', $mon);
-                    })->count();
-                } else {
-                    $count = 0;
-                }
-                $data[] = $count;
-            }
         } elseif ($period === 'yearly') {
-            $yearStart = $startDate->copy()->startOfYear();
-            $yearEnd = $endDate->copy()->endOfYear();
-            $years = [];
-            $cursor = $yearStart->copy();
-            while ($cursor->lte($yearEnd)) {
-                $years[] = $cursor->format('Y');
+            $periodStart = $startDate->copy()->startOfYear();
+            $periodEnd = $endDate->copy()->endOfYear();
+            $cursor = $periodStart->copy();
+            while ($cursor->lte($periodEnd)) {
+                $labels[] = $cursor->format('Y');
+                $count = ThanhToan::whereYear('ngay_thanh_toan', $cursor->year)->count();
+                $data[] = $count;
                 $cursor->addYear();
             }
-
-            foreach ($years as $y) {
-                $labels[] = $y;
-                if ($hasCreatedAt) {
-                    $count = DonHang::whereYear('created_at', $y)->count();
-                } elseif ($hasThanhToanDate) {
-                    $count = DonHang::whereHas('thanhToan', function($q) use ($y) {
-                        $q->whereYear('ngay_thanh_toan', $y);
-                    })->count();
-                } else {
-                    $count = 0;
-                }
-                $data[] = $count;
-            }
         } else {
-            // daily
             $cursor = $startDate->copy();
             while ($cursor->lte($endDate)) {
-                $labels[] = $cursor->format('d/m/Y');
-                if ($hasCreatedAt) {
-                    $count = DonHang::whereDate('created_at', $cursor->toDateString())->count();
-                } elseif ($hasThanhToanDate) {
-                    $count = DonHang::whereHas('thanhToan', function($q) use ($cursor) {
-                        $q->whereDate('ngay_thanh_toan', $cursor->toDateString());
-                    })->count();
-                } else {
-                    $count = 0;
-                }
+                $labels[] = $cursor->format('d/m');
+                $count = ThanhToan::whereDate('ngay_thanh_toan', $cursor->toDateString())->count();
                 $data[] = $count;
                 $cursor->addDay();
             }
         }
 
-        // Pass JSON-encoded arrays for Chart.js
         $chartLabels = json_encode($labels);
         $chartData = json_encode($data);
 
-        return view('admin.reports.index', compact('totalOrders', 'totalUsers', 'totalRevenue', 'recentOrders', 'chartLabels', 'chartData', 'period', 'startDate', 'endDate'));
+
+        $topProducts = DB::table('chi_tiet_don_hang')
+            ->join('don_hang', 'chi_tiet_don_hang.don_hang_id', '=', 'don_hang.id')
+            ->join('thanh_toan', 'don_hang.id', '=', 'thanh_toan.don_hang_id') 
+            ->join('san_pham', 'chi_tiet_don_hang.san_pham_id', '=', 'san_pham.id')
+            ->whereBetween('thanh_toan.ngay_thanh_toan', [$startDate, $endDate])
+            ->select(
+                'san_pham.id',
+                'san_pham.name', 
+                DB::raw('SUM(chi_tiet_don_hang.so_luong) as tong_so_luong'),
+                DB::raw('SUM(chi_tiet_don_hang.so_luong * san_pham.gia) as tong_doanh_thu')
+            )
+            ->groupBy('san_pham.id', 'san_pham.name') 
+            ->orderByDesc('tong_so_luong') 
+            ->limit(5)
+            ->get();
+
+        return view('admin.reports.index', compact(
+            'totalOrders',
+            'totalUsers',
+            'totalRevenue',
+            'recentOrders',
+            'chartLabels',
+            'chartData',
+            'period',
+            'startDate',
+            'endDate',
+            'topProducts' 
+        ));
     }
 }

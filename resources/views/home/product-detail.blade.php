@@ -52,9 +52,23 @@
             <form class="form-horizontal qtyFrm" action="{{ route('cart.add', ['id' => $product->id]) }}" method="GET">
                 <div class="control-group">
                     <label class="control-label">
-                        <span
-                            style="color:red; font-size:18px; font-weight:bold;">{{ number_format($product->gia, 0, ',', '.') }}
-                            ₫</span>
+
+                        @if($product->gia > $product->gia_ban)
+                            {{-- Có giảm giá --}}
+                            
+                                <span style="color:red; font-size:18px; font-weight:bold;">
+                                    {{ number_format($product->gia_ban, 0, ',', '.') }}₫
+                                </span>
+                                
+                          
+                        @else
+                            {{-- Không giảm giá --}}
+                     
+                                 <span
+                            style="color:red; font-size:18px; font-weight:bold;">{{ number_format($product->gia, 0, ',', '.') }}₫</span>   
+                            
+                            
+                        @endif
                     </label>
                     <div class="controls">
                         <input type="number" name="so_luong" class="span1" placeholder="Qty." value="1" min="1"
@@ -71,7 +85,7 @@
 
             <form class="form-horizontal qtyFrm pull-right">
                 <div class="control-group">
-                 
+
                 </div>
             </form>
             <hr class="soft clr" />
@@ -91,7 +105,7 @@
             </ul>
 
             <div id="myTabContent" class="tab-content">
-                
+
                 <!-- TAB 1: THÔNG SỐ KỸ THUẬT -->
                 <div class="tab-pane fade active in" id="home">
                     <h4>Thông tin sản phẩm</h4>
@@ -138,13 +152,13 @@
 
                 <!-- TAB 2: ĐÁNH GIÁ VÀ BÌNH LUẬN -->
                 <div class="tab-pane fade" id="profile">
-                    
+
                     <!-- A. FORM VIẾT ĐÁNH GIÁ -->
                     <div class="row">
                         <div class="span9">
                             <div class="well">
                                 <h4>Viết đánh giá của bạn</h4>
-                                
+
                                 {{-- Thông báo thành công --}}
                                 @if(session('success'))
                                     <div class="alert alert-success">
@@ -162,9 +176,10 @@
                                     </div>
                                 @endif
 
-                                <form action="{{ route('products.review', ['id' => $product->id]) }}" method="POST" class="form-horizontal">
+                                <form action="{{ route('products.review', ['id' => $product->id]) }}" method="POST"
+                                    class="form-horizontal">
                                     @csrf
-                                    
+
                                     <!-- Chọn sao -->
                                     <div class="control-group">
                                         <label class="control-label" style="padding-top: 15px;"><b>Đánh giá:</b></label>
@@ -188,8 +203,8 @@
                                     <div class="control-group">
                                         <label class="control-label"><b>Tên hiển thị:</b></label>
                                         <div class="controls">
-                                            <input type="text" class="span6" disabled 
-                                                value="{{ Auth::check() ? Auth::user()->name : 'Người ẩn danh (Chưa đăng nhập)' }}" 
+                                            <input type="text" class="span6" disabled
+                                                value="{{ Auth::check() ? Auth::user()->name : 'Người ẩn danh (Chưa đăng nhập)' }}"
                                                 style="background-color: #eee; cursor: not-allowed;">
                                         </div>
                                     </div>
@@ -198,7 +213,8 @@
                                     <div class="control-group">
                                         <label class="control-label"><b>Nội dung:</b></label>
                                         <div class="controls">
-                                            <textarea name="noi_dung" rows="3" class="span6" placeholder="Mời bạn chia sẻ cảm nhận về sản phẩm..."></textarea>
+                                            <textarea name="noi_dung" rows="3" class="span6"
+                                                placeholder="Mời bạn chia sẻ cảm nhận về sản phẩm..."></textarea>
                                         </div>
                                     </div>
 
@@ -213,10 +229,10 @@
                     </div>
 
                     <hr class="soft" />
-                    
+
                     <!-- B. DANH SÁCH ĐÁNH GIÁ -->
                     <h4>Các đánh giá từ khách hàng</h4>
-                    
+
                     @if($product->danhGias && $product->danhGias->count() > 0)
                         @foreach($product->danhGias->sortByDesc('created_at') as $danhGia)
                             <div class="row" style="margin-bottom: 20px;">
@@ -226,8 +242,8 @@
                                         $email = $danhGia->user ? $danhGia->user->email : 'guest';
                                         $hash = md5(strtolower(trim($email)));
                                     @endphp
-                                    <img src="https://www.gravatar.com/avatar/{{ $hash }}?d=mp&s=64" 
-                                         class="img-polaroid" style="width: 64px; height: 64px; border-radius: 50%;" />
+                                    <img src="https://www.gravatar.com/avatar/{{ $hash }}?d=mp&s=64" class="img-polaroid"
+                                        style="width: 64px; height: 64px; border-radius: 50%;" />
                                 </div>
                                 <div class="span8">
                                     <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px;">
@@ -235,7 +251,7 @@
                                         <span class="pull-right" style="color: #999; font-size: 12px;">
                                             {{ $danhGia->created_at ? $danhGia->created_at->format('d/m/Y H:i') : '' }}
                                         </span>
-                                        
+
                                         <div style="color: #f89406; font-size: 14px; margin: 5px 0;">
                                             @for($i = 0; $i < $danhGia->vote; $i++)
                                                 <i class="icon-star"></i>
@@ -267,35 +283,41 @@
             float: left;
             height: 30px;
         }
-        .rate:not(:checked) > input {
-            position:absolute;
-            top:-9999px;
+
+        .rate:not(:checked)>input {
+            position: absolute;
+            top: -9999px;
         }
-        .rate:not(:checked) > label {
-            float:right;
-            width:1em;
-            overflow:hidden;
-            white-space:nowrap;
-            cursor:pointer;
-            font-size:24px;
-            color:#ccc;
+
+        .rate:not(:checked)>label {
+            float: right;
+            width: 1em;
+            overflow: hidden;
+            white-space: nowrap;
+            cursor: pointer;
+            font-size: 24px;
+            color: #ccc;
             margin-right: 5px;
         }
-        .rate:not(:checked) > label:before {
+
+        .rate:not(:checked)>label:before {
             content: '★ ';
         }
-        .rate > input:checked ~ label {
-            color: #ffc700;    
+
+        .rate>input:checked~label {
+            color: #ffc700;
         }
-        .rate:not(:checked) > label:hover,
-        .rate:not(:checked) > label:hover ~ label {
-            color: #deb217;  
+
+        .rate:not(:checked)>label:hover,
+        .rate:not(:checked)>label:hover~label {
+            color: #deb217;
         }
-        .rate > input:checked + label:hover,
-        .rate > input:checked + label:hover ~ label,
-        .rate > input:checked ~ label:hover,
-        .rate > input:checked ~ label:hover ~ label,
-        .rate > label:hover ~ input:checked ~ label {
+
+        .rate>input:checked+label:hover,
+        .rate>input:checked+label:hover~label,
+        .rate>input:checked~label:hover,
+        .rate>input:checked~label:hover~label,
+        .rate>label:hover~input:checked~label {
             color: #c59b08;
         }
 
@@ -311,15 +333,18 @@
             justify-content: center;
             background: #fff;
         }
+
         .main-image-box img {
             max-height: 100%;
             max-width: 100%;
             object-fit: contain;
         }
+
         .thumbnail-slider-container {
             position: relative;
             padding: 0 30px;
         }
+
         .thumbnail-track {
             display: flex;
             gap: 10px;
@@ -328,7 +353,11 @@
             scrollbar-width: none;
             padding-bottom: 5px;
         }
-        .thumbnail-track::-webkit-scrollbar { display: none; }
+
+        .thumbnail-track::-webkit-scrollbar {
+            display: none;
+        }
+
         .thumb-item {
             flex: 0 0 60px;
             height: 60px;
@@ -336,12 +365,17 @@
             cursor: pointer;
             transition: all 0.2s;
         }
+
         .thumb-item img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-        .thumb-item.active { border: 2px solid #007bff; }
+
+        .thumb-item.active {
+            border: 2px solid #007bff;
+        }
+
         .thumb-nav {
             position: absolute;
             top: 50%;
@@ -358,8 +392,14 @@
             z-index: 10;
             padding: 0;
         }
-        .thumb-nav.prev { left: 0; }
-        .thumb-nav.next { right: 0; }
+
+        .thumb-nav.prev {
+            left: 0;
+        }
+
+        .thumb-nav.next {
+            right: 0;
+        }
     </style>
 
     {{-- SCRIPT JS --}}

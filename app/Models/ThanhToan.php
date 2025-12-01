@@ -11,7 +11,7 @@ class ThanhToan extends Model
 
     protected $table = 'thanh_toan';
     protected $primaryKey = 'don_hang_id';
-    protected $fillable = ['don_hang_id', 'ngay_thanh_toan', 'tong_tien'];
+    protected $fillable = ['don_hang_id', 'ngay_thanh_toan', 'tong_tien','phuong_thuc'];
 
     public function donHang()
     {

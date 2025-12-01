@@ -8,52 +8,65 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\DonHang;
 use App\Models\ThanhToan;
-use App\Models\SanPham; // Nhớ use Model này
+use App\Models\SanPham; 
 
 class ThanhToanController extends Controller
 {
-    /**
-     * BƯỚC 1: GIỮ CHỖ (Trừ kho ngay & Chuyển trạng thái sang 1)
-     */
+
     public function proceedToPaymentPage(Request $request)
     {
         if (!Auth::check()) return redirect()->route('login');
 
         DB::beginTransaction();
         try {
-            // 1. Tìm giỏ hàng (trạng thái 0)
             $cart = DonHang::with('chiTietDonHang.sanPham')
                         ->where('user_id', Auth::id())
                         ->where('trang_thai', DonHang::STATUS_CART)
-                        ->lockForUpdate() // Khóa dòng này để xử lý
+                        ->lockForUpdate() 
                         ->first();
 
             if (!$cart || $cart->chiTietDonHang->isEmpty()) {
                 return back()->with('error', 'Giỏ hàng trống!');
             }
 
-            // 2. Kiểm tra kho và TRỪ KHO NGAY LẬP TỨC
             foreach ($cart->chiTietDonHang as $item) {
                 $sanPham = $item->sanPham;
                 
-                // Kiểm tra đủ hàng không
                 if ($sanPham->so_luong_con < $item->so_luong) {
                     throw new \Exception('Sản phẩm "' . $sanPham->name . '" không đủ hàng (chỉ còn ' . $sanPham->so_luong_con . ').');
                 }
 
-                // Trừ kho luôn (Giữ hàng)
                 $sanPham->decrement('so_luong_con', $item->so_luong);
             }
 
-            // 3. Cập nhật trạng thái -> 1 (Chờ thanh toán)
             $cart->ghi_chu = $request->input('ghi_chu');
-            $cart->trang_thai = DonHang::STATUS_PENDING; 
-            $cart->save();
+            $paymentMethod = $request->input('payment_method');
 
-            DB::commit();
+            if ($paymentMethod == 'cod') {
+                $cart->trang_thai = DonHang::STATUS_PROCESSING; 
+                $cart->save();
+
+                $totalMoney = 0;
+                foreach ($cart->chiTietDonHang as $item) {
+                     $totalMoney += $item->sanPham->gia_ban * $item->so_luong;
+                }
+                ThanhToan::create([
+                    'don_hang_id' => $cart->id,
+                    'tong_tien' => $totalMoney,
+                    'ngay_thanh_toan' => now(),
+                    'phuong_thuc' => 'cod'
+                ]);
+
+                DB::commit();
+                return redirect()->route('home')->with('message', 'Đặt hàng thành công (COD)! Chúng tôi sẽ sớm liên hệ.');
             
-            // Chuyển đến trang QR
-            return redirect()->route('payment.show', ['id' => $cart->id]);
+            }else {
+                $cart->trang_thai = DonHang::STATUS_PENDING; 
+                $cart->save();
+                
+                DB::commit();
+                return redirect()->route('payment.show', ['id' => $cart->id]);
+            }
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -61,53 +74,39 @@ class ThanhToanController extends Controller
         }
     }
 
-    /**
-     * BƯỚC 2: Hiển thị trang QR (Lấy đơn hàng trạng thái 1)
-     */
     public function showPaymentPage($id)
     {
         if (!Auth::check()) return redirect()->route('login');
 
-        // Tìm đơn hàng đang chờ thanh toán (Trạng thái 1)
         $donHang = DonHang::with('chiTietDonHang.sanPham')
                         ->where('id', $id)
                         ->where('user_id', Auth::id())
-                        ->where('trang_thai', DonHang::STATUS_PENDING) // Đang giữ chỗ
+                        ->where('trang_thai', DonHang::STATUS_PENDING)
                         ->firstOrFail();
 
-        // Tính tiền
         $totalMoney = 0;
         foreach ($donHang->chiTietDonHang as $item) {
             $totalMoney += $item->sanPham->gia_ban * $item->so_luong;
         }
 
-        // 1. Mã ngân hàng của VietinBank (dùng cho link img.vietqr.io)
-        $bankCode = "970415"; // (Vietcombank là VCB, VietinBank là CTG)
+        $bankCode = "970415"; 
 
-        // 2. Số tài khoản của bạn
         $accountNo = "101877194831";
 
-        // 3. Mẫu template (giống của bạn bạn)
         $template = "compact2";
 
-        // 4. Nội dung (cần mã hóa)
         $memo = "DH" . $donHang->id;
-        $encodedMemo = urlencode($memo); // Mã hóa để link không bị lỗi
+        $encodedMemo = urlencode($memo); 
 
-        // 5. Tạo link mới (Không cần accountName)
         $qrApiUrl = "https://img.vietqr.io/image/{$bankCode}-{$accountNo}-{$template}.png?amount={$totalMoney}&addInfo={$encodedMemo}";
 
         return view('home.payment', compact('donHang', 'totalMoney', 'qrApiUrl', 'memo'));
     }
 
-    /**
-     * BƯỚC 3: XÁC NHẬN THANH TOÁN (Chỉ cần ghi nhận tiền)
-     */
     public function paymentSuccess($id)
     {
         if (!Auth::check()) return redirect()->route('login');
 
-        // Tìm đơn hàng đang chờ (1)
         $donHang = DonHang::where('id', $id)
                         ->where('user_id', Auth::id())
                         ->where('trang_thai', DonHang::STATUS_PENDING)
@@ -117,33 +116,26 @@ class ThanhToanController extends Controller
             return redirect()->route('home')->with('error', 'Đơn hàng không hợp lệ.');
         }
 
-        // Tính lại tổng tiền để lưu
-        // (Lúc này không cần lo hết hàng nữa vì đã trừ ở Bước 1 rồi)
         $totalMoney = 0;
         foreach ($donHang->chiTietDonHang as $item) {
             $totalMoney += $item->sanPham->gia_ban * $item->so_luong;
         }
 
-        // Tạo bản ghi thanh toán
         ThanhToan::updateOrCreate(
             ['don_hang_id' => $donHang->id],
             [
                 'ngay_thanh_toan' => now(),
-                'tong_tien' => $totalMoney
+                'tong_tien' => $totalMoney,
+                'phuong_thuc' => 'qr'
             ]
         );
 
-        // Chuyển trạng thái -> 2 (Hoàn thành/Đã trả tiền)
         $donHang->trang_thai = DonHang::STATUS_PROCESSING; 
         $donHang->save();
 
         return redirect()->route('home')->with('message', 'Thanh toán thành công!');
     }
 
-    /**
-     * BƯỚC 4 (MỚI): HỦY THANH TOÁN (Trả hàng lại kho)
-     * Dùng khi khách đổi ý tại trang QR
-     */
     public function cancelPayment($id)
     {
         if (!Auth::check()) return redirect()->route('login');
@@ -153,16 +145,13 @@ class ThanhToanController extends Controller
             $donHang = DonHang::with('chiTietDonHang.sanPham')
                             ->where('id', $id)
                             ->where('user_id', Auth::id())
-                            ->where('trang_thai', DonHang::STATUS_PENDING) // Chỉ hủy đơn đang chờ
+                            ->where('trang_thai', DonHang::STATUS_PENDING) 
                             ->firstOrFail();
 
-            // Hoàn trả số lượng kho
             foreach ($donHang->chiTietDonHang as $item) {
                 $item->sanPham->increment('so_luong_con', $item->so_luong);
             }
 
-            // Quay về trạng thái 0 (Giỏ hàng) để khách mua tiếp hoặc sửa
-            // Hoặc xóa luôn đơn hàng tùy bạn (ở đây tôi chọn quay về giỏ)
             $donHang->trang_thai = DonHang::STATUS_CART;
             $donHang->save();
 

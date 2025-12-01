@@ -120,6 +120,7 @@ return new class extends Migration
             $table->foreignId('don_hang_id')->primary()->constrained('don_hang');
             $table->datetime('ngay_thanh_toan');
             $table->float('tong_tien');
+            $table->string('phuong_thuc', 50)->default('qr');
             $table->timestamps();
         });
     }

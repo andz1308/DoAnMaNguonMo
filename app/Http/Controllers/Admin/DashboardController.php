@@ -15,14 +15,12 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Get statistics
         $totalUsers = User::count();
         $totalProducts = SanPham::count();
         $totalReviews = DanhGia::count();
         $totalOrders = DonHang::count();
         $totalPromotions = KhuyenMai::count();
 
-        // Get recent data
         $userDateCol = Schema::hasColumn('users', 'created_at') ? 'created_at' : 'id';
         $recentUsers = User::with('role')
             ->orderByDesc($userDateCol)

@@ -73,6 +73,21 @@
         padding: 10px 15px;
     }
     .search-box .form-control:focus { box-shadow: none; border-color: #0d6efd; }
+
+    /* Fix pagination size */
+    .pagination-wrapper .pagination {
+        margin-bottom: 0;
+    }
+    
+    .pagination-wrapper .page-link {
+        padding: 0.375rem 0.75rem;
+        font-size: 0.875rem;
+    }
+    
+    .pagination-wrapper .page-item:first-child .page-link,
+    .pagination-wrapper .page-item:last-child .page-link {
+        border-radius: 0.25rem;
+    }
 </style>
 @endpush
 
@@ -237,8 +252,8 @@
             <div class="text-muted font-13">
                 Hiển thị <strong>{{ $users->firstItem() }} - {{ $users->lastItem() }}</strong> trong tổng số <strong>{{ $users->total() }}</strong> bản ghi
             </div>
-            <div>
-                {{ $users->links() }}
+            <div class="pagination-wrapper">
+                {{ $users->links('pagination::bootstrap-4') }}
             </div>
         </div>
         @endif

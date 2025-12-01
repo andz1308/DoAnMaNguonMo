@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\DonHang;
 use App\Models\ChiTietDonHang;
-use App\Models\SanPham; // Giả sử model sản phẩm là SanPham
+use App\Models\SanPham; 
 use Illuminate\Support\Facades\Schema;
 
 class DonHangController extends Controller
@@ -18,7 +18,6 @@ class DonHangController extends Controller
         if (!Auth::check()) {
             session()->put('url.intended', url()->previous());
 
-            // Chuyển hướng sang login
             return redirect()->route('login')->with('error', 'Vui lòng đăng nhập để mua hàng.');
         }
 
@@ -35,7 +34,6 @@ class DonHangController extends Controller
 
         $user = Auth::user();
 
-        // ... (Phần firstOrCreate DonHang giữ nguyên) ...
         $donHang = DonHang::firstOrCreate(
             ['user_id' => $user->id, 'trang_thai' => DonHang::STATUS_CART],
             ['ghi_chu' => null]

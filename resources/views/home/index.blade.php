@@ -3,7 +3,7 @@
 @section('content')
     <div class="span9">
         <div class="well well-small">
-            <h4>Featured Products</h4>
+            <h4>Sản Phẩm Nổi Bật</h4>
             <div class="row-fluid">
                 <div id="featured" class="carousel slide">
                     <div class="carousel-inner">
@@ -41,7 +41,7 @@
 
     <table class="table">
         <div class="span9">
-            <h4>Tat ca san pham</h4>
+            <h4>Tất cả sản phẩm</h4>
             <ul class="thumbnails">
                 @foreach($products as $product)
                     <li class="span3">

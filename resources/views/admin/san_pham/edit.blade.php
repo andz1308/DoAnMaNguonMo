@@ -16,9 +16,8 @@
 
     <form action="{{ route('admin.san_pham.update', $sanPham->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
-        @method('PUT') {{-- Phương thức PUT cho update --}}
+        @method('PUT') 
 
-        {{-- Các trường thông tin sản phẩm (dùng PascalCase cho name/id) --}}
         <div class="mb-3">
             <label for="name" class="form-label">Tên sản phẩm</label>
             <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $sanPham->name) }}">
@@ -42,8 +41,6 @@
             <input type="text" class="form-control" id="thuong_hieu" name="thuong_hieu"
                 value="{{ old('thuong_hieu', $sanPham->thuong_hieu) }}">
         </div>
-        {{-- Thêm các input tương tự cho: ManHinh, DoPhangiai, Camera, Cpu, Pin, NgayPhatHanh, DungLuong, KichThuoc,
-        TrongLuong --}}
         <div class="mb-3">
             <label for="so_luong_con" class="form-label">Số lượng còn</label>
             <input type="number" class="form-control" id="so_luong_con" name="so_luong_con"

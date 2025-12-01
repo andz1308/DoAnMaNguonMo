@@ -15,7 +15,6 @@ class UsersController extends Controller
     {
         $query = User::with('role');
 
-        // Search
         if ($request->has('search') && $request->search) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
@@ -28,12 +27,10 @@ class UsersController extends Controller
             });
         }
 
-        // Filter by role
         if ($request->has('role') && $request->role) {
             $query->where('role_id', $request->role);
         }
 
-        // Filter by status
         if (
             $request->has('status') &&
             $request->status !== '' &&
@@ -42,7 +39,7 @@ class UsersController extends Controller
             $query->where('trang_thai', $request->status);
         }
 
-    $userDateCol = Schema::hasColumn('users', 'created_at') ? 'created_at' : 'id';
+        $userDateCol = Schema::hasColumn('users', 'created_at') ? 'created_at' : 'id';
         $users = $query->orderByDesc($userDateCol)->paginate(15)->withQueryString();
         $roles = Role::all();
 
@@ -55,12 +52,18 @@ class UsersController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'dien_thoai' => 'nullable|string|max:20',
+            'dien_thoai' => 'nullable|numeric|digits:10|unique:users,dien_thoai',
             'password' => 'required|string|min:6',
             'role_id' => ['required', Rule::exists($roleTable, 'id')],
             'dia_chi' => 'nullable|string|max:255',
             'gioi_tinh' => 'nullable|string|max:10',
             'trang_thai' => 'nullable|boolean',
+        ], [
+            'email.unique' => 'Email này đã được sử dụng bởi tài khoản khác.',
+            'dien_thoai.unique' => 'Số điện thoại này đã được sử dụng.',
+            'dien_thoai.numeric' => 'Số điện thoại phải là định dạng số.',
+            'dien_thoai.digits' => 'Số điện thoại phải có đúng 10 chữ số.',
+            'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự.',
         ]);
 
         $payload = [
@@ -101,15 +104,22 @@ class UsersController extends Controller
         $user = User::findOrFail($id);
 
         $roleTable = (new Role())->getTable();
+        
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
-            'dien_thoai' => 'nullable|string|max:20',
+            'dien_thoai' => 'nullable|numeric|digits:10|unique:users,dien_thoai,' . $id,
             'role_id' => ['required', Rule::exists($roleTable, 'id')],
             'dia_chi' => 'nullable|string|max:255',
             'gioi_tinh' => 'nullable|string|max:10',
             'trang_thai' => 'nullable|boolean',
             'password' => 'nullable|string|min:6',
+        ], [
+            'email.unique' => 'Email này đã được sử dụng bởi tài khoản khác.',
+            'dien_thoai.unique' => 'Số điện thoại này đã được sử dụng.',
+            'dien_thoai.numeric' => 'Số điện thoại phải là định dạng số.',
+            'dien_thoai.digits' => 'Số điện thoại phải có đúng 10 chữ số.',
+            'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự.',
         ]);
 
         $payload = [
@@ -148,7 +158,15 @@ class UsersController extends Controller
 
     public function destroy($id)
     {
-        $user = User::findOrFail($id);
+        $hasOrders = \App\Models\DonHang::where('user_id', $id)->exists();
+        $hasOrders2 = \App\Models\DanhGia::where('user_id', $id)->exists();
+
+        if ($hasOrders || $hasOrders2) {
+            return redirect()->route('admin.users.index')
+                ->with('error', 'Không thể xóa! Người dùng này đã có lịch sử mua hàng.');
+        }
+
+        $user = User::findOrFail($id);  
         $user->delete();
 
         return redirect()->route('admin.users.index')->with('success', 'Xóa người dùng thành công!');

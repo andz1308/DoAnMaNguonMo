@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\DonHang;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Validation\Rule;
@@ -34,16 +35,55 @@ class DonHangController extends Controller
             $query->where('trang_thai', $request->status);
         }
 
+        $dateFrom = $request->filled('date_from')
+            ? Carbon::parse($request->date_from)->startOfDay()
+            : null;
+        $dateTo = $request->filled('date_to')
+            ? Carbon::parse($request->date_to)->endOfDay()
+            : null;
+
         $hasPaymentDate = Schema::hasColumn('thanh_toan', 'ngay_thanh_toan');
 
         if ($hasPaymentDate) {
             $query->leftJoin('thanh_toan', 'thanh_toan.don_hang_id', '=', 'don_hang.id')
-                ->select('don_hang.*', 'thanh_toan.ngay_thanh_toan as payment_date')
-                ->orderByDesc('thanh_toan.ngay_thanh_toan')
-                ->orderByDesc('don_hang.id');
+                ->select('don_hang.*', 'thanh_toan.ngay_thanh_toan as payment_date');
+
+            if ($dateFrom) {
+                $query->whereDate('thanh_toan.ngay_thanh_toan', '>=', $dateFrom);
+            }
+
+            if ($dateTo) {
+                $query->whereDate('thanh_toan.ngay_thanh_toan', '<=', $dateTo);
+            }
         } else {
-            $query->orderByDesc('id');
+            if ($dateFrom) {
+                $query->whereDate('don_hang.created_at', '>=', $dateFrom);
+            }
+
+            if ($dateTo) {
+                $query->whereDate('don_hang.created_at', '<=', $dateTo);
+            }
         }
+
+        $query->orderByRaw(sprintf(
+            'CASE 
+                WHEN don_hang.trang_thai = %d THEN 0
+                WHEN don_hang.trang_thai = %d THEN 1
+                WHEN don_hang.trang_thai = %d THEN 2
+                WHEN don_hang.trang_thai = %d THEN 3
+                ELSE 4
+            END',
+            DonHang::STATUS_PENDING,
+            DonHang::STATUS_PROCESSING,
+            DonHang::STATUS_COMPLETED,
+            DonHang::STATUS_CANCELLED
+        ));
+
+        if ($hasPaymentDate) {
+            $query->orderByDesc('thanh_toan.ngay_thanh_toan');
+        }
+
+        $query->orderByDesc('don_hang.id');
 
         $orders = $query->paginate(15)->withQueryString();
 
